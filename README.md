@@ -1,4 +1,4 @@
-# Estoque de Vendas
+# PC-Stock
 
 ### **Autor:** Péricles Expedito Andrade
 
