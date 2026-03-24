@@ -1,6 +1,6 @@
-# 🛠️ Especificação Técnica (Tech Spec) - Roubank
+# 🛠️ Especificação Técnica (Tech Spec) - PC-Stock
 
-Este documento detalha a arquitetura técnica, o modelo de dados e os contratos de API (via JSON Server) necessários para o funcionamento do sistema bancário Roubank.
+Este documento detalha a arquitetura técnica, o modelo de dados e os contratos de API (via JSON Server) necessários para o funcionamento do sistema de gerenceamento do PC-Stock.
 
 ## 1. Modelo de Dados (Diagrama ER)
 
@@ -17,7 +17,6 @@ USUARIO {
 string id PK
 string email
 string senha_hash
-datetime data_criacao
 }
 
 PRODUTO {
@@ -59,15 +58,22 @@ datetime data
 
 Breve explicação das tabelas principais:
 
-- **Clientes:** Responsável por armazenar os dados de autenticação e o saldo consolidado do usuário.
+- **Usuario:** Responsável por armazenar os dados de autenticação.
   - id: Identificador único gerado pelo JSON Server (String ou Hash).
-  - cpf: Chave de acesso do usuário. Em um cenário real seria único, mas para o MVP não há trava estrita no banco, apenas validação no front-end.
-  - saldo: Valor numérico (Float) que representa o dinheiro disponível. Pode ficar negativo devido à cobrança implacável de taxas do banco.
-- **Transações:** Registra o histórico financeiro. Regra de Negócio Crítica: Toda transação de SAQUE ou DEPOSITO feita pelo cliente deve gerar, via JavaScript, uma transação secundária automática do tipo TAXA, subtraindo um valor do saldo do cliente.
-  - clienteId: Chave estrangeira que vincula a transação ao cliente (padrão de nomenclatura exigido pelo JSON Server para rotas aninhadas).
-  - tipo: Aceita apenas os valores "SAQUE", "DEPOSITO" ou "TAXA".
-  - valor: Sempre um número positivo. O front-end decide se soma ou subtrai do saldo geral baseado no tipo.
-
+  - email: Chave de acesso do usuário. Em um cenário real seria único, mas para o MVP não há trava estrita no banco, apenas validação no front-end.
+  - senha: Chave de acesso que autentica com o email para confirmar ja esta cadastrado no banco de dados.
+- **Produto:** Registra um produto e fica vinculado com um cliente, com suas informaçoes.
+  - id: Identificador único gerado pelo JSON Server (String ou Hash).
+  - usuarioId: Chave estrangeira que vincula a produto ao  usuario (padrão de nomenclatura exigido pelo JSON Server para rotas aninhadas).
+  - nome
+  - modelo
+  - tipo
+  - especificacoes_tecnicas
+  - informacoes_adicionais
+  - valor_venda
+  - quantidade_estoque
+  - data_cadastro
+}
 ## 3. Rotas da API (JSON Server)
 
 A aplicação consome a API local simulada pelo JSON Server. Abaixo os principais endpoints:
