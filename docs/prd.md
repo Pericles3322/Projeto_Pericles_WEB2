@@ -10,7 +10,7 @@ e Saida dos produtos e em qual mercado de varejo foi vendido (amazon, mercado li
 ## 2. Atores do Sistema
 
 - **Cliente:** Usuário autenticado que possui um estoque com seus itens e suas quantidades respectivas.
-- **O Banco (Sistema):** Ator invizivel que recebe e gerencia os produtos e suas quantidades.
+- **O Banco (Sistema):** Ator invizivel que recebe e gerencia os produtos e suas quantidades e seus historicos.
 
 ## 3. Histórias de Usuário e Escopo
 
@@ -19,16 +19,19 @@ Abaixo estão as funcionalidades principais do MVP (Minimum Viable Product), esc
 ### 👤 Épico 1: Autenticação e Conta
 
 - **US0 - Acesso ao Sistema (Login):** Como um Cliente, quero inserir meu email e senha para acessar meu estoque.
+- _Citerios de aceitação:_ sistema tem que validar o email e senha para ver se esta cadastrado no BD.
+- _Caso não tenha cadastrado:_ tera a opção de cadastras login ou esqueceu a senha (onde sera validado se o email esta no BD), caso não esteja sera informado para cadastra um novo login.
 
-### 💰 Épico 2: Movimentações Financeiras
+### 💰 Épico 2: Gerenciamento de Estoque
 
-- **US03 - Visualização de Saldo:** Como um Cliente logado, quero ver mmeus produtostotal atualizado em destaque no painel principal, para saber quanto dinheiro (ainda) tenho.
-- **US04 - Realizar Depósito:** Como um Cliente, quero informar um valor para depositar na minha conta.
-  - _Critérios de Aceitação:_ O valor deve ser positivo; o sistema deve cobrar uma **"Taxa de Depósito" (ex: 2% do valor)** e creditar apenas o valor líquido na conta do cliente.
-- **US05 - Realizar Saque:** Como um Cliente, quero informar um valor para sacar da minha conta.
-  - _Critérios de Aceitação:_ O cliente não pode sacar mais do que o saldo disponível + limite; o sistema deve cobrar uma **"Taxa de Saque" (ex: R$ 5,00 fixos por saque)**, descontando o valor do saque + a taxa do saldo total.
+- **US03 - Visualização de Saldo:** Como um Cliente logado, quero ter acesso a todos os produtos que eu ternho no meu estque e a quantidade respectiva de cada um
+- **US04 - Realizar inserção:** como cliente quero pode inserir novos produtos e seus valores de venda respectivos com suas especificações (modelo, tipo, especificaçoes tecnicas, informaçoes adicionais)
+- **US05 - Realizar inserçao de pedidos** quantidade de itens em cada pedido, com suas informações de pedido (lote, remetente, qual o distribuidor, valor da nota, quantidade de itens e produtos).
+  - _Critérios de Aceitação: o produto deve estar cadastrado antes para que o pedido insira a quantidade de produtos.
+- **US05 - Realizar baixa:** Como um Cliente, quero baixar uma quantidade de produtos e sua respectiva venda ou seu motivo de baixa(quantidade baixado, motivo da baixa, valor total dos produtos baixado, e qual destinatario foi baixado).
+  - _Critérios de Aceitação:_ O cliente não pode baixar mais do que o saldo disponível, e tem que expecificar o motivo da baixa, se foi vendido, defeito, trocado, ajuste de quantidade.
 
 ### 📊 Épico 3: Histórico e Transparência
 
-- **US06 - Visualizar Extrato:** Como um Cliente, quero visualizar uma lista (tabela ou cards) com o histórico de todas as minhas transações (depósitos e saques).
-  - _Critérios de Aceitação:_ A lista deve mostrar a data, o tipo de transação, o valor bruto e **o valor da taxa cobrada** pelo Roubank, deixando claro o quanto o cliente perdeu na operação.
+- **US06 - Visualizar Extrato:** Como um Cliente, quero visualizar uma lista (tabela ou cards) com o histórico de todas as minhas auteraçoes (cadastro de pedido, produto e baixas).
+  - _Critérios de Aceitação:_ A lista deve mostrar a data, o tipo de alteração, o valor bruto, deixando claro a quantidde de itens que foi treanferido e quais itens.
