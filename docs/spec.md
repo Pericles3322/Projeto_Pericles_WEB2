@@ -88,38 +88,58 @@ Esta é a representação em formato JSON do banco de dados simulado. Esta estru
 
 ```JSON
 {
-    "clientes": [
+  "usuarios": [
     {
-        "id": "1",
-        "nome": "João da Silva",
-        "cpf": "12345678900",
-        "senha": "senha_super_segura",
-        "saldo": 850.50
-    }],
-    "transacoes": [
+      "id": 1,
+      "email": "cliente@email.com",
+      "senha_hash": "hash_da_senha"
+    }
+  ],
+  "produtos": [
     {
-        "id": "1",
-        "clienteId": "1",
-        "tipo": "DEPOSITO",
-        "valor": 1000.00,
-        "data": "2026-03-16",
-        "descricao": "Depósito inicial em espécie"
+      "id": 1,
+      "usuarioId": 1,
+      "nome": "Placa de Vídeo",
+      "modelo": "RX 5600 XT",
+      "tipo": "Hardware",
+      "especificacoes_tecnicas": "6GB GDDR6, 192-bit",
+      "informacoes_adicionais": "Marca Sapphire",
+      "valor_venda": 1800.00,
+      "quantidade_estoque": 10,
+      "data_cadastro": "2026-03-24"
+    }
+  ],
+  "entradas": [
+    {
+      "id": 1,
+      "produtoId": 1,
+      "quantidade": 10,
+      "valor_unitario": 1200.00,
+      "lote": "Lote-2026-03-A",
+      "remetente": "Fornecedor XYZ",
+      "distribuidor": "Distribuidora ABC",
+      "data": "2026-03-24"
+    }
+  ],
+  "saidas": [
+    {
+      "id": 1,
+      "produtoId": 1,
+      "quantidade": 2,
+      "valor_unitario": 1800.00,
+      "motivo": "VENDA",
+      "destinatario": "Mercado Livre",
+      "data": "2026-03-25"
     },
     {
-        "id": "2",
-        "clienteId": "1",
-        "tipo": "TAXA",
-        "valor": 50.00,
-        "data": "2026-03-16",
-        "descricao": "Taxa de boas-vindas do Roubank"
-    },
-    {
-        "id": "3",
-        "clienteId": "1",
-        "tipo": "SAQUE",
-        "valor": 99.50,
-        "data": "2026-03-17",
-        "descricao": "Saque no caixa eletrônico"
-    }]
+      "id": 2,
+      "produtoId": 1,
+      "quantidade": 1,
+      "valor_unitario": null,
+      "motivo": "DEFEITO",
+      "destinatario": null,
+      "data": "2026-03-25"
+    }
+  ]
 }
 ...
