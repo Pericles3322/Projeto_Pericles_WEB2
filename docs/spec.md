@@ -9,50 +9,51 @@ Abaixo está o Diagrama Entidade-Relacionamento (DER) que representa a estrutura
 ```mermaid
 erDiagram
 
-USUARIO ||--o{ PRODUTO : "possui"
-PRODUTO ||--o{ ENTRADA : "recebe"
-PRODUTO ||--o{ SAIDA : "sofre baixa"
+USUARIO ||--o{ PRODUTO : possui
+PRODUTO ||--o{ ENTRADA : recebe
+PRODUTO ||--o{ SAIDA : sofre_baixa
 
 USUARIO {
-string id PK "Obrigatório"
-string email "Obrigatório - único"
-string senha_hash "Obrigatório"
-datetime data_criacao "Obrigatório"
+string id PK
+string email
+string senha_hash
+datetime data_criacao
 }
 
 PRODUTO {
-string id PK "Obrigatório"
-string usuarioId FK "Obrigatório - dono do produto"
-string nome "Obrigatório"
-string modelo "Opcional"
-string tipo "Opcional"
-string especificacoes_tecnicas "Opcional"
-string informacoes_adicionais "Opcional"
-float valor_venda "Obrigatório"
-int quantidade_estoque "Obrigatório"
-datetime data_cadastro "Obrigatório"
+string id PK
+string usuarioId FK
+string nome
+string modelo
+string tipo
+string especificacoes_tecnicas
+string informacoes_adicionais
+float valor_venda
+int quantidade_estoque
+datetime data_cadastro
 }
 
 ENTRADA {
-string id PK "Obrigatório"
-string produtoId FK "Obrigatório"
-int quantidade "Obrigatório"
-float valor_unitario "Obrigatório"
-string lote "Recomendado"
-string remetente "Opcional"
-string distribuidor "Opcional"
-datetime data "Obrigatório"
+string id PK
+string produtoId FK
+int quantidade
+float valor_unitario
+string lote
+string remetente
+string distribuidor
+datetime data
 }
 
 SAIDA {
-string id PK "Obrigatório"
-string produtoId FK "Obrigatório"
-int quantidade "Obrigatório"
-float valor_unitario "Obrigatório"
-string motivo "Obrigatório (venda, defeito, troca, ajuste)"
-string destinatario "Opcional"
-datetime data "Obrigatório"
+string id PK
+string produtoId FK
+int quantidade
+float valor_unitario
+string motivo
+string destinatario
+datetime data
 }
+```
 
 ## 2. Dicionário de Dados
 
