@@ -63,17 +63,33 @@ Breve explicação das tabelas principais:
   - email: Chave de acesso do usuário. Em um cenário real seria único, mas para o MVP não há trava estrita no banco, apenas validação no front-end.
   - senha: Chave de acesso que autentica com o email para confirmar ja esta cadastrado no banco de dados.
 - **Produto:** Registra um produto e fica vinculado com um cliente, com suas informaçoes.
-  - id: Identificador único gerado pelo JSON Server (String ou Hash).
-  - usuarioId: Chave estrangeira que vincula a produto ao  usuario (padrão de nomenclatura exigido pelo JSON Server para rotas aninhadas).
-  - nome
-  - modelo
-  - tipo
-  - especificacoes_tecnicas
-  - informacoes_adicionais
-  - valor_venda
-  - quantidade_estoque
-  - data_cadastro
-}
+  - id: Identificador único do produto.
+  - usuarioId: Chave estrangeira que vincula o produto a um usuário específico, garantindo que cada estoque seja individual.
+  - nome: Nome principal do produto, utilizado para identificação rápida.
+  - modelo: Modelo ou versão do produto, permitindo diferenciação entre itens semelhantes.
+  - tipo: Categoria do produto (ex: Hardware, Periférico). Campo opcional utilizado para organização.
+  - especificacoes_tecnicas: Informações detalhadas sobre características técnicas do produto (ex: memória, velocidade, compatibilidade). Campo opcional.
+  - informacoes_adicionais: Campo livre para observações extras, como estado do produto ou notas internas.
+  - valor_venda: Valor unitário de venda do produto, utilizado como base para operações comerciais.
+  - quantidade_estoque: Quantidade atual disponível no estoque. Esse valor é dinâmico e deve ser atualizado a cada movimentação (entrada ou saída).
+  - data_cadastro: Data em que o produto foi registrado no sistema.
+- **Entradas:** Responsável por registrar todas as movimentações de entrada de produtos no estoque, normalmente associadas a compras, reposições ou recebimento de mercadorias.
+  - id: Identificador único da entrada.
+  - produtoId: Chave estrangeira que vincula a entrada a um produto previamente cadastrado.
+  - quantidade: Quantidade de itens adicionados ao estoque nessa operação.
+  - valor_unitario: Custo unitário do produto no momento da entrada, importante para controle financeiro e cálculo de margem.
+  - lote: Identificação do lote de origem da mercadoria, útil para rastreabilidade e controle logístico.
+  - remetente: Origem do envio (ex: fornecedor específico ou local de envio). Campo opcional.
+  - distribuidor: Empresa ou entidade responsável pela distribuição do produto.
+  - data: Data em que a entrada foi realizada.
+-**Saida:** Responsável por registrar todas as movimentações de saída de produtos do estoque, incluindo vendas, perdas, defeitos ou ajustes de inventário.
+  - id: Identificador único da saída.
+  - produtoId: Chave estrangeira que vincula a saída a um produto existente.
+  - quantidade: Quantidade de itens removidos do estoque.
+  - valor_unitario: Valor unitário do produto no momento da saída. Utilizado principalmente em casos de venda para controle financeiro.
+  - motivo: Define a natureza da saída. Exemplos comuns incluem "VENDA", "DEFEITO", "AJUSTE", entre outros.
+  - destinatario: Indica para onde o produto foi destinado (ex: plataformas de venda como Mercado Livre, Amazon ou loja física). Pode ser nulo dependendo do tipo de saída.
+  - data: Data em que a saída foi registrada.
 ## 3. Rotas da API (JSON Server)
 
 A aplicação consome a API local simulada pelo JSON Server. Abaixo os principais endpoints:
