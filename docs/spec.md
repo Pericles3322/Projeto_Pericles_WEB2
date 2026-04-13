@@ -94,10 +94,27 @@ Breve explicação das tabelas principais:
 
 A aplicação consome a API local simulada pelo JSON Server. Abaixo os principais endpoints:
 
+### Usuários
 - `GET /usuarios` - Retorna a lista de usuários.
 - `POST /usuarios` - Cadastra um novo usuário.
-- `GET /transacoes?id_usuario=1` - Retorna o extrato de um usuário específico.
 
+### Produtos
+- `GET /produtos` - Retorna a lista de produtos.
+- `GET /produtos?usuarioId=1` - Retorna os produtos de um usuário específico.
+- `POST /produtos` - Cadastra um novo produto.
+- `PATCH /produtos/:id` - Atualiza parcialmente um produto, como quantidade em estoque ou status ativo.
+- `DELETE /produtos/:id` - Remove um produto, quando aplicável pela regra de negócio.
+
+### Entradas
+- `GET /entradas` - Retorna a lista de entradas.
+- `GET /entradas?produtoId=1` - Retorna as entradas de um produto específico.
+- `POST /entradas` - Registra uma nova entrada de estoque.
+
+### Saídas
+- `GET /saidas` - Retorna a lista de saídas.
+- `GET /saidas?produtoId=1` - Retorna as saídas de um produto específico.
+- `POST /saidas` - Registra uma nova saída de estoque.
+  
 ## 4. Estrutura do Banco de Dados (db.json)
 
 Esta é a representação em formato JSON do banco de dados simulado. Esta estrutura serve de contexto para ferramentas de IA e para o JSON Server inicializar a API Fake.
@@ -158,4 +175,12 @@ Esta é a representação em formato JSON do banco de dados simulado. Esta estru
     }
   ]
 }
-...
+````
+
+## 5. Framework CSS
+
+O projeto PC-Stock utiliza o **Bootstrap v5.3.8** como framework CSS oficial da aplicação.
+
+### Importância do versionamento
+
+O registro exato da versão do framework é importante para garantir compatibilidade futura durante a manutenção do projeto, evitando diferenças de comportamento entre classes, componentes e utilitários do Bootstrap. Essa definição também ajuda ferramentas de Inteligência Artificial, como Cursor e Copilot, a gerar código utilizando a sintaxe, classes utilitárias e componentes corretos da versão realmente adotada no sistema.
