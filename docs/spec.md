@@ -10,18 +10,20 @@ Abaixo está o Diagrama Entidade-Relacionamento (DER) que representa a estrutura
 erDiagram
 
 USUARIO ||--o{ PRODUTO : possui
+USUARIO ||--o{ ENTRADA : realiza
+USUARIO ||--o{ SAIDA : realiza
 PRODUTO ||--o{ ENTRADA : recebe
 PRODUTO ||--o{ SAIDA : sofre_baixa
 
 USUARIO {
-string id PK
+int id PK
 string email
-string senha_hash
+string senha
 }
 
 PRODUTO {
-string id PK
-string usuarioId FK
+int id PK
+int usuarioId FK
 string nome
 string modelo
 string tipo
@@ -29,28 +31,31 @@ string especificacoes_tecnicas
 string informacoes_adicionais
 float valor_venda
 int quantidade_estoque
-datetime data_cadastro
+string data_cadastro
+boolean ativo
 }
 
 ENTRADA {
-string id PK
-string produtoId FK
+int id PK
+int usuarioId FK
+int produtoId FK
 int quantidade
 float valor_unitario
 string lote
 string remetente
 string distribuidor
-datetime data
+string data
 }
 
 SAIDA {
-string id PK
-string produtoId FK
+int id PK
+int usuarioId FK
+int produtoId FK
 int quantidade
 float valor_unitario
 string motivo
 string destinatario
-datetime data
+string data
 }
 ```
 
@@ -125,7 +130,7 @@ Esta é a representação em formato JSON do banco de dados simulado. Esta estru
     {
       "id": 1,
       "email": "cliente@email.com",
-      "senha_hash": "hash_da_senha"
+      "senha": "123456"
     }
   ],
   "produtos": [
@@ -138,13 +143,28 @@ Esta é a representação em formato JSON do banco de dados simulado. Esta estru
       "especificacoes_tecnicas": "6GB GDDR6, 192-bit",
       "informacoes_adicionais": "Marca Sapphire",
       "valor_venda": 1800.00,
-      "quantidade_estoque": 10,
-      "data_cadastro": "2026-03-24"
+      "quantidade_estoque": 7,
+      "data_cadastro": "2026-03-24",
+      "ativo": true
+    },
+    {
+      "id": 2,
+      "usuarioId": 1,
+      "nome": "Processador",
+      "modelo": "Ryzen 5 5600",
+      "tipo": "Hardware",
+      "especificacoes_tecnicas": "6 núcleos, 12 threads, 4.4GHz",
+      "informacoes_adicionais": "Socket AM4",
+      "valor_venda": 950.00,
+      "quantidade_estoque": 0,
+      "data_cadastro": "2026-04-01",
+      "ativo": true
     }
   ],
   "entradas": [
     {
       "id": 1,
+      "usuarioId": 1,
       "produtoId": 1,
       "quantidade": 10,
       "valor_unitario": 1200.00,
@@ -157,6 +177,7 @@ Esta é a representação em formato JSON do banco de dados simulado. Esta estru
   "saidas": [
     {
       "id": 1,
+      "usuarioId": 1,
       "produtoId": 1,
       "quantidade": 2,
       "valor_unitario": 1800.00,
@@ -166,6 +187,7 @@ Esta é a representação em formato JSON do banco de dados simulado. Esta estru
     },
     {
       "id": 2,
+      "usuarioId": 1,
       "produtoId": 1,
       "quantidade": 1,
       "valor_unitario": null,
@@ -181,6 +203,6 @@ Esta é a representação em formato JSON do banco de dados simulado. Esta estru
 
 O projeto PC-Stock utiliza o **Bootstrap v5.3.8** como framework CSS oficial da aplicação.
 
-### Importância do versionamento
+### Importância da Verção
 
-O registro exato da versão do framework é importante para garantir compatibilidade futura durante a manutenção do projeto, evitando diferenças de comportamento entre classes, componentes e utilitários do Bootstrap. Essa definição também ajuda ferramentas de Inteligência Artificial, como Cursor e Copilot, a gerar código utilizando a sintaxe, classes utilitárias e componentes corretos da versão realmente adotada no sistema.
+O registro exato da versão utilizada é importante para garantir compatibilidade futura durante a manutenção do projeto, evitando diferenças de comportamento entre classes, componentes e utilitários do framework. Essa definição também ajuda ferramentas de Inteligência Artificial, como Cursor e Copilot, a gerar código utilizando a sintaxe e os componentes corretos da versão realmente adotada no sistema.
