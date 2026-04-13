@@ -26,7 +26,13 @@ Para entender as regras de negócio, o escopo e a arquitetura técnica da aplica
 
 ## 💻 Tecnologias e Dependências
 
-- Em Andamento
+No desenvolvimento da interface do projeto foi utilizado o **Bootstrap 5.3.8** como Framework CSS, com o objetivo de facilitar a criação de um layout responsivo e organizado para desktop, tablet e mobile. 
+A escolha do Bootstrap foi feita por ele possuir uma grande variedade de componentes prontos, como formulários, botões, tabelas, menus e sistema de grid,
+o que ajudou bastante na construção das telas do sistema. Além disso, é uma tecnologia muito utilizada e bem mantida com atualizaçoes constantes no GitHub, o que traz mais segurança para o desenvolvimento e evolução do projeto.
+
+Para integração com dados externos, foi escolhida a **RapidAPI**, utilizada como plataforma de acesso a APIs públicas.
+Essa escolha foi feita porque a RapidAPI permite conectar o sistema com serviços externos de forma mais prática e flexível, facilitando futuras expansões do projeto.
+No contexto do PC-Stock, a API pública agrega valor ao sistema por permitir implementar consultas externas, automações e recursos complementares que podem tornar o gerenciamento de estoque mais completo e dinâmico.
 
 ## ✅ Checklist | Indicadores de Desempenho (ID) dos Resultados de Aprendizagem (RA)
 
