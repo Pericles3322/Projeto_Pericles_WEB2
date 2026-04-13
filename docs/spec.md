@@ -6,12 +6,14 @@ Este documento detalha a arquitetura técnica, o modelo de dados e os contratos 
 
 Abaixo está o Diagrama Entidade-Relacionamento (DER) que representa a estrutura do nosso "banco de dados" (`db.json`) e como as informações se conectam.
 
+## 1. Modelo de Dados (Diagrama ER)
+
+Abaixo está o Diagrama Entidade-Relacionamento (DER) que representa a estrutura atual do nosso "banco de dados" (`db.json`) e como as informações se conectam dentro do sistema.
+
 ```mermaid
 erDiagram
 
 USUARIO ||--o{ PRODUTO : possui
-USUARIO ||--o{ ENTRADA : realiza
-USUARIO ||--o{ SAIDA : realiza
 PRODUTO ||--o{ ENTRADA : recebe
 PRODUTO ||--o{ SAIDA : sofre_baixa
 
@@ -37,7 +39,6 @@ boolean ativo
 
 ENTRADA {
 int id PK
-int usuarioId FK
 int produtoId FK
 int quantidade
 float valor_unitario
@@ -49,7 +50,6 @@ string data
 
 SAIDA {
 int id PK
-int usuarioId FK
 int produtoId FK
 int quantidade
 float valor_unitario
@@ -164,7 +164,6 @@ Esta é a representação em formato JSON do banco de dados simulado. Esta estru
   "entradas": [
     {
       "id": 1,
-      "usuarioId": 1,
       "produtoId": 1,
       "quantidade": 10,
       "valor_unitario": 1200.00,
@@ -177,7 +176,6 @@ Esta é a representação em formato JSON do banco de dados simulado. Esta estru
   "saidas": [
     {
       "id": 1,
-      "usuarioId": 1,
       "produtoId": 1,
       "quantidade": 2,
       "valor_unitario": 1800.00,
@@ -187,7 +185,6 @@ Esta é a representação em formato JSON do banco de dados simulado. Esta estru
     },
     {
       "id": 2,
-      "usuarioId": 1,
       "produtoId": 1,
       "quantidade": 1,
       "valor_unitario": null,
