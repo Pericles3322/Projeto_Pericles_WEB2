@@ -1,0 +1,4 @@
+1) Apague node_modules e package-lock.json
+2) Rode npm install novamente
+3) Apague a chave pcstock_local_db do localStorage
+4) Remova do db.json produtos antigos com id aleatório e recrie-os

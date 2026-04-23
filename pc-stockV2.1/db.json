@@ -1,0 +1,120 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "email": "cliente@email.com",
+      "senha": "123456"
+    },
+    {
+      "id": 2,
+      "email": "teste@email.com",
+      "senha": "123456"
+    }
+  ],
+  "produtos": [
+    {
+      "id": 1,
+      "usuarioId": 1,
+      "nome": "Placa de Vídeo",
+      "modelo": "RX 5600 XT",
+      "tipo": "Hardware",
+      "especificacoes_tecnicas": "6GB GDDR6, 192-bit",
+      "informacoes_adicionais": "Marca Sapphire",
+      "valor_venda": 1800,
+      "quantidade_estoque": 7,
+      "data_cadastro": "2026-03-24",
+      "ativo": true
+    },
+    {
+      "id": 2,
+      "usuarioId": 1,
+      "nome": "Processador",
+      "modelo": "Ryzen 5 5600",
+      "tipo": "Hardware",
+      "especificacoes_tecnicas": "6 núcleos, 12 threads, 4.4GHz",
+      "informacoes_adicionais": "Socket AM4",
+      "valor_venda": 950,
+      "quantidade_estoque": 0,
+      "data_cadastro": "2026-04-01",
+      "ativo": true
+    },
+    {
+      "id": 3,
+      "usuarioId": 1,
+      "nome": "teste",
+      "modelo": "3t",
+      "tipo": "ssd",
+      "especificacoes_tecnicas": "",
+      "informacoes_adicionais": "",
+      "valor_venda": 100,
+      "quantidade_estoque": 100,
+      "data_cadastro": "2026-04-22",
+      "ativo": true
+    },
+    {
+      "id": 4,
+      "usuarioId": 2,
+      "nome": "teste1",
+      "modelo": "valor",
+      "tipo": "placa de video",
+      "especificacoes_tecnicas": "",
+      "informacoes_adicionais": "",
+      "valor_venda": 150,
+      "quantidade_estoque": 10,
+      "data_cadastro": "2026-04-22",
+      "ativo": true
+    }
+  ],
+  "entradas": [
+    {
+      "id": 1,
+      "produtoId": 1,
+      "quantidade": 10,
+      "valor_unitario": 1200,
+      "lote": "Lote-2026-03-A",
+      "remetente": "Fornecedor XYZ",
+      "distribuidor": "Distribuidora ABC",
+      "data": "2026-03-24"
+    },
+    {
+      "id": 2,
+      "produtoId": 3,
+      "quantidade": 100,
+      "valor_unitario": 0,
+      "lote": "",
+      "remetente": "",
+      "distribuidor": "",
+      "data": "2026-04-22"
+    },
+    {
+      "id": 3,
+      "produtoId": 4,
+      "quantidade": 10,
+      "valor_unitario": 36,
+      "lote": "",
+      "remetente": "",
+      "distribuidor": "",
+      "data": "2026-04-22"
+    }
+  ],
+  "saidas": [
+    {
+      "id": 1,
+      "produtoId": 1,
+      "quantidade": 2,
+      "valor_unitario": 1800,
+      "motivo": "VENDA",
+      "destinatario": "Mercado Livre",
+      "data": "2026-03-25"
+    },
+    {
+      "id": 2,
+      "produtoId": 1,
+      "quantidade": 1,
+      "valor_unitario": null,
+      "motivo": "DEFEITO",
+      "destinatario": null,
+      "data": "2026-03-25"
+    }
+  ]
+}

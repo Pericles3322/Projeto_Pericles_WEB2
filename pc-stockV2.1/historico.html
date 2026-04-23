@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-bs-theme="dark">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400" rel="stylesheet">
+
+  <title>PC-Stock | Histórico de Movimentações</title>
+</head>
+<body data-page="historico">
+  <div class="app-shell">
+    <aside class="app-sidebar d-none d-lg-flex flex-column">
+      <div class="mb-5 px-3">
+        <h1 class="h4 brand-title font-headline">PC-Stock</h1>
+        <p class="brand-subtitle">Inventory Control</p>
+      </div>
+      <nav class="flex-grow-1">
+        <a class="sidebar-link" href="/painel.html"><span class="material-symbols-outlined">dashboard</span><span>Painel</span></a><a class="sidebar-link" href="/novo_produto.html"><span class="material-symbols-outlined">add_box</span><span>Novo Produto</span></a><a class="sidebar-link" href="/entrada.html"><span class="material-symbols-outlined">login</span><span>Entrada</span></a><a class="sidebar-link" href="/saida.html"><span class="material-symbols-outlined">logout</span><span>Saída</span></a><a class="sidebar-link active" href="/historico.html"><span class="material-symbols-outlined">history</span><span>Histórico</span></a>
+      </nav>
+      <div class="mt-auto px-3 pt-4 border-top border-secondary border-opacity-10">
+        <button class="btn btn-link p-0 text-decoration-none text-info fw-bold" data-logout>Sair da conta</button>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <header class="app-topbar d-flex align-items-center justify-content-between gap-3">
+        <div>
+          <div class="section-eyebrow">PC-Stock</div>
+          <h2 class="h4 mb-0">Histórico de Movimentações</h2>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-surface d-none d-lg-inline-flex" data-logout>Sair</button>
+          <button class="btn btn-surface d-inline-flex d-lg-none" data-logout>Sair</button>
+        </div>
+      </header>
+
+      <main class="container-fluid py-4">
+
+        <section class="table-card">
+          <div class="mb-4">
+            <div class="section-eyebrow">Relatório</div>
+            <h3 class="h4 mb-2">Histórico completo</h3>
+            <p class="page-note mb-0">O histórico une cadastro de produtos, entradas e saídas. As datas são exibidas corretamente sem deslocamento de fuso horário.</p>
+          </div>
+
+          <div id="historico-table"></div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <nav class="mobile-nav d-lg-none">
+    <a class="" href="/painel.html"><span class="material-symbols-outlined d-block">dashboard</span>Painel</a><a class="" href="/novo_produto.html"><span class="material-symbols-outlined d-block">add_box</span>Novo</a><a class="" href="/entrada.html"><span class="material-symbols-outlined d-block">login</span>Entrada</a><a class="" href="/saida.html"><span class="material-symbols-outlined d-block">logout</span>Saída</a><a class="active" href="/historico.html"><span class="material-symbols-outlined d-block">history</span>Histórico</a>
+  </nav>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
