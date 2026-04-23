@@ -22,7 +22,7 @@ Para entender as regras de negócio, o escopo e a arquitetura técnica da aplica
 
 ## 🌐 Site em Produção - GitHub Pages
 
-- Em Andamento
+- [📚 Readme do Projeto](./pc-stockV2.1/README.md) - Passo a passo de execução do Sistema
 
 ## 💻 Tecnologias e Dependências
 
