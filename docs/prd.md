@@ -5,7 +5,7 @@
 O **PC-Stock** é uma aplicação web de gerenciamento que simula as operações básicas de recebimento de e quantidade de produtos (quantidade, fornecedor, especificações das peças)
 e Saida dos produtos e em qual mercado de varejo foi vendido (amazon, mercado livre, loja fisica), e armazenando seus historicos
 
-**O foco do sistema é** ter uma gerencia de quantidade para que o usuario possa se palnejar para compras futuras e ter uma visão completa de quantos itens ele possui, e ja foi vendido.
+**O foco do sistema é** ter uma gerencia de quantidade para que o usuario possa se planejar para compras futuras e ter uma visão completa de quantos itens ele possui, e ja foi vendido.
 
 ## 2. Atores do Sistema
 
