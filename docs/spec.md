@@ -87,7 +87,7 @@ Breve explicação das tabelas principais:
   - remetente: Origem do envio (ex: fornecedor específico ou local de envio). Campo opcional.
   - distribuidor: Empresa ou entidade responsável pela distribuição do produto.
   - data: Data em que a entrada foi realizada.
--**Saida:** Responsável por registrar todas as movimentações de saída de produtos do estoque, incluindo vendas, perdas, defeitos ou ajustes de inventário.
+- **Saida:** Responsável por registrar todas as movimentações de saída de produtos do estoque, incluindo vendas, perdas, defeitos ou ajustes de inventário.
   - id: Identificador único da saída.
   - produtoId: Chave estrangeira que vincula a saída a um produto existente.
   - quantidade: Quantidade de itens removidos do estoque.
