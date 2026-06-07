@@ -34,20 +34,68 @@ Para integração com dados externos, foi escolhida a **RapidAPI**, utilizada co
 Essa escolha foi feita porque a RapidAPI permite conectar o sistema com serviços externos de forma mais prática e flexível, facilitando futuras expansões do projeto.
 No contexto do PC-Stock, a API pública agrega valor ao sistema por permitir implementar consultas externas, automações e recursos complementares que podem tornar o gerenciamento de estoque mais completo e dinâmico.
 
+## Estilos com SCSS separado
+
+O projeto usa dois arquivos CSS compilados:
+
+- `assets/styles/bootstrap.css`: CSS do Bootstrap 5.3.8 compilado a partir de `assets/scss/bootstrap.scss`;
+- `assets/styles/style.css`: CSS personalizado do PC-Stock compilado a partir de `assets/scss/main.scss` e dos SCSS de componentes/telas.
+
+Esse formato separa o framework dos estilos próprios do projeto, facilitando a manutenção e a explicação da atividade. Para alterar o visual do sistema, edite os arquivos `.scss`, não os arquivos `.css` compilados.
+
+## Rodando localmente
+
+```bash
+npm install
+npm run build:css
+npm run api
+npm run dev
+```
+
+- Frontend: `http://localhost:5173`
+- API Fake: `http://localhost:3000`
+
+## Scripts úteis
+
+```bash
+npm run sass          # observa alterações no SCSS
+npm run build:css     # compila SCSS para CSS
+npm run format        # formata arquivos com Prettier
+npm run format:check  # verifica formatação com Prettier
+npm run lint          # verifica JavaScript com ESLint
+npm run lint:fix      # tenta corrigir problemas com ESLint
+npm run build         # compila SCSS e gera build do Vite
+```
+
+## Usuário de teste
+
+- Email: `cliente@email.com`
+- Senha: `123456`
+
+## Tecnologias e dependências principais
+
+- Bootstrap 5.3.8
+- Sass/SCSS
+- Vite
+- JSON Server
+- JavaScript modular
+- Prettier
+- ESLint
+
 ## ✅ Checklist | Indicadores de Desempenho (ID) dos Resultados de Aprendizagem (RA)
 
 #### RA1 - Utilizar Frameworks CSS para estilização de elementos HTML e criação de layouts responsivos.
 
 - [x] ID 01 - Prototipa interfaces adaptáveis para no mínimo os tamanhos de tela mobile e desktop, usando ferramentas de design tradicionais (Figma, Quant UX ou Sketch) ou IA (Stitch).
 - [x] ID 02 - Implementa layout responsivo com Framework CSS (Bootstrap, Materialize, Tailwind + DaisyUI) usando Flexbox ou Grid do próprio framework.
-- [ ] ID 03 - Implementa layout responsivo com CSS puro, usando Flexbox ou Grid Layout.
-- [ ] ID 04 - Utiliza componentes prontos de um Framework CSS (ex.: card, button) e componentes JavaScript do framework (ex.: modal, carousel).
+- [x] ID 03 - Implementa layout responsivo com CSS puro, usando Flexbox ou Grid Layout.
+- [x] ID 04 - Utiliza componentes prontos de um Framework CSS (ex.: card, button) e componentes JavaScript do framework (ex.: modal, carousel).
 - [x] ID 05 - Cria layout fluido usando unidades relativas (vw, vh, %, em, rem) no lugar de unidades fixas (px).
 - [x] ID 06 - Aplica um Design System consistente (cores, tipografia, padrões de componentes) em toda a aplicação.
-- [ ] ID 07 - Utiliza Sass (SCSS) com ou sem framework, aplicando variáveis, mixins e funções para modularizar o código.
+- [x] ID 07 - Utiliza Sass (SCSS) com ou sem framework, aplicando variáveis, mixins e funções para modularizar o código.
 - [x] ID 08 - Aplica tipografia responsiva (media queries mobile first) ou tipografia fluida (função clamp() + unidades relativas).
-- [ ] ID 09 - Aplica técnicas de responsividade de imagens usando CSS (object-fit, containers com unidades relativas).
-- [ ] ID 10 - Otimiza imagens usando formatos modernos (WebP) e carregamento adaptativo (srcset, picture, ou parâmetros do Cloudinary).
+- [x] ID 09 - Aplica técnicas de responsividade de imagens usando CSS (object-fit, containers com unidades relativas).
+- [x] ID 10 - Otimiza imagens usando formatos modernos (WebP) e carregamento adaptativo (srcset, picture, ou parâmetros do Cloudinary).
 
 #### RA2 - Realizar tratamento de formulários e aplicar validações customizadas no lado cliente.
 
@@ -62,7 +110,7 @@ No contexto do PC-Stock, a API pública agrega valor ao sistema por permitir imp
 - [x] ID 16 - Utiliza boas práticas de versionamento no Git/GitHub (branch main ou branches específicos, uso de .gitignore).
 - [x] ID 17 - Mantém um README.md padronizado, conforme template da disciplina, com checklist preenchido.
 - [x] ID 18 - Organiza arquivos do projeto de forma modular, seguindo padrão de exemplo fornecido.
-- [ ] ID 19 - Configura linters e formatadores (ESLint, Prettier) para manter qualidade e padronização do código.
+- [x] ID 19 - Configura linters e formatadores (ESLint, Prettier) para manter qualidade e padronização do código.
 
 #### RA4 - Aplicar bibliotecas de funções e componentes em JavaScript para aprimorar a interatividade de páginas web.
 
