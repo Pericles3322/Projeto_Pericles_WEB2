@@ -142,3 +142,4 @@ npm run build         # compila SCSS e gera build do Vite
 - Executar o projeto frontend.
 
 ## 📱 Telas da aplicação
+
