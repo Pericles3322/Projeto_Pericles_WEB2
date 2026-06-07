@@ -1,0 +1,28 @@
+@use '../abstracts/variables' as v;
+
+.btn-kinetic {
+  background: linear-gradient(135deg, #c3f5ff 0%, #00e5ff 100%);
+  color: #00363d;
+  border: none;
+  border-radius: v.$radius-sm;
+  font-weight: 800;
+  padding: 0.95rem 1.3rem;
+  box-shadow: 0 12px 24px rgba(0, 229, 255, 0.15);
+
+  &:hover {
+    color: #00363d;
+    filter: brightness(1.05);
+  }
+}
+
+.btn-surface {
+  background-color: var(--surface-high);
+  color: var(--text-main);
+  border: none;
+  border-radius: v.$radius-sm;
+
+  &:hover {
+    background-color: var(--surface-highest);
+    color: #fff;
+  }
+}

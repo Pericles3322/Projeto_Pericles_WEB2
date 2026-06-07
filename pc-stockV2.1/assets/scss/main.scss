@@ -1,0 +1,20 @@
+@use 'abstracts/variables';
+@use 'abstracts/functions';
+@use 'abstracts/mixins';
+
+@use 'base/base';
+@use 'layout/shell';
+
+@use 'components/cards';
+@use 'components/forms';
+@use 'components/buttons';
+@use 'components/tables';
+@use 'components/feedback';
+@use 'components/utilities';
+
+@use '../../pages/login/login';
+@use '../../pages/dashboard/dashboard';
+@use '../../pages/new-product/new-product';
+@use '../../pages/stock-entry/stock-entry';
+@use '../../pages/stock-exit/stock-exit';
+@use '../../pages/history/history';

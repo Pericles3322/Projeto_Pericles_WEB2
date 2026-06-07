@@ -1,0 +1,71 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/functions' as f;
+
+:root {
+  --bg-body: #{v.$bg-body};
+  --surface-low: #{v.$surface-low};
+  --surface: #{v.$surface};
+  --surface-high: #{v.$surface-high};
+  --surface-highest: #{v.$surface-highest};
+  --primary-cyan: #{v.$primary-cyan};
+  --secondary-cyan: #{v.$secondary-cyan};
+  --text-main: #{v.$text-main};
+  --text-muted: #{v.$text-muted};
+  --danger-soft: #{v.$danger-soft};
+  --shadow-soft: #{v.$shadow-soft};
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+.font-headline {
+  font-family: 'Manrope', sans-serif;
+}
+
+a {
+  color: inherit;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+  vertical-align: middle;
+}
+
+body {
+  font-size: f.fluid-size(0.95rem, calc(0.9rem + 0.2vw), 1.05rem);
+}
+
+h1,
+h2,
+h3,
+.font-headline {
+  line-height: 1.12;
+}
+
+h1 {
+  font-size: f.fluid-size(1.8rem, calc(1.2rem + 2.4vw), 3.2rem);
+}
+
+h2 {
+  font-size: f.fluid-size(1.35rem, calc(1rem + 1.2vw), 2rem);
+}
+
+h3 {
+  font-size: f.fluid-size(1.15rem, calc(0.95rem + 0.8vw), 1.65rem);
+}

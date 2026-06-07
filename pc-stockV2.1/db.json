@@ -23,7 +23,9 @@
       "valor_venda": 1800,
       "quantidade_estoque": 7,
       "data_cadastro": "2026-03-24",
-      "ativo": true
+      "ativo": true,
+      "quantidade_cadastro": 0,
+      "createdAt": "2026-03-24T00:00:00.000Z"
     },
     {
       "id": 2,
@@ -36,7 +38,9 @@
       "valor_venda": 950,
       "quantidade_estoque": 0,
       "data_cadastro": "2026-04-01",
-      "ativo": true
+      "ativo": true,
+      "quantidade_cadastro": 0,
+      "createdAt": "2026-04-01T00:00:00.000Z"
     },
     {
       "id": 3,
@@ -49,7 +53,9 @@
       "valor_venda": 100,
       "quantidade_estoque": 100,
       "data_cadastro": "2026-04-22",
-      "ativo": true
+      "ativo": true,
+      "quantidade_cadastro": 0,
+      "createdAt": "2026-04-22T00:00:00.000Z"
     },
     {
       "id": 4,
@@ -62,7 +68,24 @@
       "valor_venda": 150,
       "quantidade_estoque": 10,
       "data_cadastro": "2026-04-22",
-      "ativo": true
+      "ativo": true,
+      "quantidade_cadastro": 0,
+      "createdAt": "2026-04-22T00:00:00.000Z"
+    },
+    {
+      "id": 5,
+      "usuarioId": 2,
+      "nome": "teste",
+      "modelo": "valor",
+      "tipo": "",
+      "especificacoes_tecnicas": "",
+      "informacoes_adicionais": "",
+      "valor_venda": 0,
+      "quantidade_estoque": 0,
+      "data_cadastro": "2026-04-27",
+      "ativo": true,
+      "quantidade_cadastro": 0,
+      "createdAt": "2026-04-27T00:00:00.000Z"
     }
   ],
   "entradas": [
@@ -74,7 +97,8 @@
       "lote": "Lote-2026-03-A",
       "remetente": "Fornecedor XYZ",
       "distribuidor": "Distribuidora ABC",
-      "data": "2026-03-24"
+      "data": "2026-03-24",
+      "createdAt": "2026-03-24T00:00:00.001Z"
     },
     {
       "id": 2,
@@ -84,7 +108,8 @@
       "lote": "",
       "remetente": "",
       "distribuidor": "",
-      "data": "2026-04-22"
+      "data": "2026-04-22",
+      "createdAt": "2026-04-22T00:00:00.002Z"
     },
     {
       "id": 3,
@@ -94,7 +119,8 @@
       "lote": "",
       "remetente": "",
       "distribuidor": "",
-      "data": "2026-04-22"
+      "data": "2026-04-22",
+      "createdAt": "2026-04-22T00:00:00.003Z"
     }
   ],
   "saidas": [
@@ -105,7 +131,8 @@
       "valor_unitario": 1800,
       "motivo": "VENDA",
       "destinatario": "Mercado Livre",
-      "data": "2026-03-25"
+      "data": "2026-03-25",
+      "createdAt": "2026-03-25T00:00:00.001Z"
     },
     {
       "id": 2,
@@ -114,7 +141,8 @@
       "valor_unitario": null,
       "motivo": "DEFEITO",
       "destinatario": null,
-      "data": "2026-03-25"
+      "data": "2026-03-25",
+      "createdAt": "2026-03-25T00:00:00.002Z"
     }
   ]
 }

@@ -1,0 +1,113 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.app-sidebar {
+  width: v.$sidebar-width;
+  min-height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--bg-body);
+  padding: 2rem 1rem;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  z-index: 1030;
+}
+
+.app-main {
+  margin-left: v.$sidebar-width;
+  min-height: 100vh;
+}
+
+.app-topbar {
+  background: rgba(19, 19, 19, 0.86);
+  backdrop-filter: blur(20px);
+  position: sticky;
+  top: 0;
+  z-index: 1020;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.brand-title {
+  color: var(--primary-cyan);
+  font-weight: 800;
+  margin-bottom: 0;
+}
+
+.brand-subtitle {
+  margin-bottom: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(229, 226, 225, 0.45);
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.5rem;
+  border-radius: v.$radius-sm;
+  color: rgba(229, 226, 225, 0.72);
+  text-decoration: none;
+  transition: v.$transition-fast;
+
+  &:hover {
+    background-color: var(--surface);
+    color: #fff;
+  }
+
+  &.active {
+    background-color: var(--surface-high);
+    color: var(--primary-cyan);
+    font-weight: 600;
+    border-right: 4px solid var(--primary-cyan);
+  }
+}
+
+.mobile-nav {
+  display: none;
+}
+
+@include m.media-lg-down {
+  .app-sidebar {
+    display: none;
+  }
+
+  .app-main {
+    margin-left: 0;
+    padding-bottom: 86px;
+  }
+
+  .mobile-nav {
+    display: flex;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1050;
+    justify-content: space-around;
+    background-color: var(--surface-low);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.8rem 0.4rem 1.1rem;
+
+    a {
+      text-decoration: none;
+      color: rgba(229, 226, 225, 0.55);
+      text-align: center;
+      font-size: 0.64rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      line-height: 1.2;
+
+      &.active {
+        color: var(--primary-cyan);
+      }
+    }
+  }
+}

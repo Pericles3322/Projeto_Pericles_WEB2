@@ -1,0 +1,24 @@
+@use 'variables' as v;
+
+@mixin surface-card($radius: v.$radius-lg) {
+  background-color: var(--surface-low);
+  border-radius: $radius;
+  box-shadow: var(--shadow-soft);
+}
+
+@mixin focus-cyan {
+  background-color: var(--surface-highest);
+  color: #fff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 229, 255, 0.15);
+}
+
+@mixin media-lg-down {
+  @media (max-width: v.$breakpoint-lg-down) {
+    @content;
+  }
+}
+
+@mixin status-pill($bg, $color) {
+  background-color: $bg;
+  color: $color;
+}

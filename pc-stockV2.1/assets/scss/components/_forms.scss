@@ -1,0 +1,25 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.form-label-kinetic {
+  color: var(--secondary-cyan);
+  font-size: 0.74rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+.form-control-kinetic,
+.form-select-kinetic,
+.form-textarea-kinetic {
+  background-color: var(--surface-highest);
+  border: none;
+  border-radius: v.$radius-sm;
+  color: var(--text-main);
+  padding: 0.95rem 1rem;
+
+  &:focus {
+    @include m.focus-cyan;
+  }
+}

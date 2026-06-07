@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="pt-BR" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../../assets/styles/bootstrap.css" />
+    <link rel="stylesheet" href="../../assets/styles/style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght@400"
+      rel="stylesheet"
+    />
+
+    <title>PC-Stock | Cadastrar Novo Produto</title>
+  </head>
+  <body data-page="novo-produto">
+    <div class="app-shell">
+      <aside class="app-sidebar d-none d-lg-flex flex-column">
+        <div class="mb-5 px-3">
+          <h1 class="h4 brand-title font-headline">PC-Stock</h1>
+          <p class="brand-subtitle">Inventory Control</p>
+        </div>
+        <nav class="flex-grow-1">
+          <a class="sidebar-link" href="../dashboard/"
+            ><span class="material-symbols-outlined">dashboard</span><span>Painel</span></a
+          ><a class="sidebar-link active" href="../new-product/"
+            ><span class="material-symbols-outlined">add_box</span><span>Novo Produto</span></a
+          ><a class="sidebar-link" href="../stock-entry/"
+            ><span class="material-symbols-outlined">login</span><span>Entrada</span></a
+          ><a class="sidebar-link" href="../stock-exit/"
+            ><span class="material-symbols-outlined">logout</span><span>Saída</span></a
+          ><a class="sidebar-link" href="../history/"
+            ><span class="material-symbols-outlined">history</span><span>Histórico</span></a
+          >
+        </nav>
+      </aside>
+
+      <div class="app-main">
+        <header class="app-topbar d-flex align-items-center justify-content-between gap-3">
+          <div>
+            <div class="section-eyebrow">PC-Stock</div>
+            <h2 class="h4 mb-0">Cadastrar Novo Produto</h2>
+          </div>
+          <div class="d-flex align-items-center gap-2">
+            <button class="btn btn-surface d-none d-lg-inline-flex" data-logout>Sair</button>
+            <button class="btn btn-surface d-inline-flex d-lg-none" data-logout>Sair</button>
+          </div>
+        </header>
+
+        <main class="container-fluid py-4">
+          <section class="form-card p-4 p-md-5">
+            <div class="mb-4">
+              <div class="section-eyebrow">Cadastro</div>
+              <h3 class="h3 mb-2">Novo produto</h3>
+              <p class="page-note mb-0">
+                Cadastre as informações principais do item. O produto entra no sistema com estoque inicial
+                zerado.
+              </p>
+            </div>
+
+            <form id="produto-form" class="row g-4">
+              <div class="col-md-6">
+                <label class="form-label-kinetic" for="nome">Nome</label>
+                <input
+                  id="nome"
+                  class="form-control form-control-kinetic"
+                  type="text"
+                  placeholder="Placa de Vídeo"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-kinetic" for="modelo">Modelo</label>
+                <input
+                  id="modelo"
+                  class="form-control form-control-kinetic"
+                  type="text"
+                  placeholder="RX 5600 XT"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-kinetic" for="tipo">Tipo</label>
+                <input
+                  id="tipo"
+                  class="form-control form-control-kinetic"
+                  type="text"
+                  placeholder="Hardware"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-kinetic" for="valor_venda">Valor de venda</label>
+                <input
+                  id="valor_venda"
+                  class="form-control form-control-kinetic"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  placeholder="0.00"
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label-kinetic" for="especificacoes_tecnicas"
+                  >Especificações técnicas</label
+                >
+                <textarea
+                  id="especificacoes_tecnicas"
+                  class="form-control form-textarea-kinetic"
+                  rows="4"
+                  placeholder="Memória, clock, compatibilidade..."
+                ></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label-kinetic" for="informacoes_adicionais">Informações adicionais</label>
+                <textarea
+                  id="informacoes_adicionais"
+                  class="form-control form-textarea-kinetic"
+                  rows="3"
+                  placeholder="Observações extras do produto."
+                ></textarea>
+              </div>
+              <div class="col-12 d-flex flex-column flex-md-row justify-content-md-end gap-3">
+                <a class="btn btn-surface" href="../dashboard/">Cancelar</a>
+                <button class="btn btn-kinetic" type="submit">Salvar produto</button>
+              </div>
+            </form>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <nav class="mobile-nav d-lg-none">
+      <a class="" href="../dashboard/"
+        ><span class="material-symbols-outlined d-block">dashboard</span>Painel</a
+      ><a class="active" href="../new-product/"
+        ><span class="material-symbols-outlined d-block">add_box</span>Novo</a
+      ><a class="" href="../stock-entry/"
+        ><span class="material-symbols-outlined d-block">login</span>Entrada</a
+      ><a class="" href="../stock-exit/"><span class="material-symbols-outlined d-block">logout</span>Saída</a
+      ><a class="" href="../history/"
+        ><span class="material-symbols-outlined d-block">history</span>Histórico</a
+      >
+    </nav>
+
+    <script type="module" src="./new-product.js"></script>
+  </body>
+</html>

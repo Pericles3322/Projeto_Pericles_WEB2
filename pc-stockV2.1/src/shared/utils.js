@@ -1,20 +1,11 @@
-export type AppPage =
-  | 'login'
-  | 'painel'
-  | 'novo-produto'
-  | 'entrada'
-  | 'saida'
-  | 'historico';
-
-export function getTodayLocalISO(): string {
+export function getTodayLocalISO() {
   const now = new Date();
   const year = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
   const day = String(now.getDate()).padStart(2, '0');
   return `${year}-${month}-${day}`;
 }
-
-export function formatDateBR(value?: string | null): string {
+export function formatDateBR(value) {
   if (!value) return '—';
   if (/^\d{4}-\d{2}-\d{2}$/.test(value)) {
     const [year, month, day] = value.split('-');
@@ -24,30 +15,22 @@ export function formatDateBR(value?: string | null): string {
   if (Number.isNaN(parsed.getTime())) return value;
   return new Intl.DateTimeFormat('pt-BR').format(parsed);
 }
-
-export function sortDateOnlyDesc(a: string, b: string): number {
-  return b.localeCompare(a);
-}
-
-export function formatCurrency(value?: number | null): string {
+export function formatCurrency(value) {
   return new Intl.NumberFormat('pt-BR', {
     style: 'currency',
     currency: 'BRL'
   }).format(value ?? 0);
 }
-
-export function qs<T extends Element>(selector: string, parent: ParentNode = document): T {
-  const element = parent.querySelector<T>(selector);
+export function qs(selector, parent = document) {
+  const element = parent.querySelector(selector);
   if (!element) throw new Error(`Elemento não encontrado: ${selector}`);
   return element;
 }
-
-export function setHTML(id: string, html: string): void {
+export function setHTML(id, html) {
   const target = document.getElementById(id);
   if (target) target.innerHTML = html;
 }
-
-export function escapeHTML(value: string): string {
+export function escapeHTML(value) {
   return value
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')
@@ -55,8 +38,7 @@ export function escapeHTML(value: string): string {
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
 }
-
-export function showToast(message: string, type: 'success' | 'error' = 'success'): void {
+export function showToast(message, type = 'success') {
   let area = document.getElementById('toast-area');
   if (!area) {
     area = document.createElement('div');
@@ -64,12 +46,10 @@ export function showToast(message: string, type: 'success' | 'error' = 'success'
     area.className = 'toast-area';
     document.body.appendChild(area);
   }
-
   const toast = document.createElement('div');
   toast.className = `toast-card ${type === 'error' ? 'error' : ''}`;
   toast.textContent = message;
   area.appendChild(toast);
-
   window.setTimeout(() => {
     toast.remove();
   }, 3200);

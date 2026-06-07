@@ -1,0 +1,34 @@
+@use '../../assets/scss/abstracts/mixins' as m;
+
+body[data-page='login'] {
+  .login-wrapper {
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .login-card {
+    max-width: 430px;
+    width: 100%;
+    padding: 2.25rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .login-glow {
+    position: absolute;
+    inset: auto auto -120px -120px;
+    width: 340px;
+    height: 340px;
+    border-radius: 999px;
+    background: rgba(0, 229, 255, 0.12);
+    filter: blur(100px);
+    pointer-events: none;
+  }
+
+  @include m.media-lg-down {
+    .login-card {
+      padding: 2rem 1.25rem;
+    }
+  }
+}

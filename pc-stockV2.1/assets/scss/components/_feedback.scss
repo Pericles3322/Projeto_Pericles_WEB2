@@ -1,0 +1,19 @@
+.toast-area {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1200;
+  width: min(380px, calc(100vw - 2rem));
+}
+
+.toast-card {
+  background-color: var(--surface-high);
+  border-radius: 1rem;
+  padding: 0.9rem 1rem;
+  box-shadow: var(--shadow-soft);
+  border-left: 4px solid var(--primary-cyan);
+
+  &.error {
+    border-left-color: var(--danger-soft);
+  }
+}

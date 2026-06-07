@@ -1,18 +1,20 @@
-import { getEntradas, getProdutos, getSaidas } from './api';
-import { getCurrentUser } from './auth';
-import { escapeHTML, formatCurrency, formatDateBR, setHTML, sortDateOnlyDesc } from './utils';
+import { getEntradas, getProdutos, getSaidas } from './api.js';
+import { getCurrentUser } from './auth.js';
+import { escapeHTML, formatCurrency, formatDateBR, setHTML } from './utils.js';
 
-interface HistoricoItem {
-  data: string;
-  produto: string;
-  tipo: string;
-  quantidade: number;
-  valorUnitario: number | null;
-  valorBruto: number | null;
-  detalhes: string;
+function getEventOrder(item) {
+  if (item.createdAt) return item.createdAt;
+
+  const date = item.data || item.data_cadastro || '';
+
+  if (item.id != null) {
+    return `${date}T00:00:00.${String(item.id).padStart(6, '0')}`;
+  }
+
+  return date;
 }
 
-export async function initHistoricoPage(): Promise<void> {
+export async function initHistoricoPage() {
   const user = getCurrentUser();
   if (!user) return;
 
@@ -21,24 +23,36 @@ export async function initHistoricoPage(): Promise<void> {
     const entradas = await getEntradas();
     const saidas = await getSaidas();
 
-    const produtoMap = new Map(produtos.map((item) => [item.id, item]));
+    const produtoMap = new Map(produtos.map((produto) => [produto.id, produto]));
 
-    const cadastro = produtos.map<HistoricoItem>((produto) => ({
-      data: produto.data_cadastro,
-      produto: `${produto.nome}${produto.modelo ? ' - ' + produto.modelo : ''}${produto.ativo === false ? ' (inativo)' : ''}`,
-      tipo: 'CADASTRO',
-      quantidade: produto.quantidade_estoque,
-      valorUnitario: produto.valor_venda,
-      valorBruto: produto.quantidade_estoque * produto.valor_venda,
-      detalhes: produto.ativo === false ? 'Cadastro inicial do produto | Produto inativo' : 'Cadastro inicial do produto'
-    }));
+    const cadastro = produtos.map((produto) => {
+      const quantidadeCadastro = Number(produto.quantidade_cadastro ?? 0);
+
+      return {
+        id: produto.id,
+        data: produto.data_cadastro,
+        createdAt: produto.createdAt || produto.data_cadastro,
+        produto: `${produto.nome}${produto.modelo ? ' - ' + produto.modelo : ''}${produto.ativo === false ? ' (inativo)' : ''}`,
+        tipo: 'CADASTRO',
+        quantidade: quantidadeCadastro,
+        valorUnitario: produto.valor_venda,
+        valorBruto: quantidadeCadastro * produto.valor_venda,
+        detalhes:
+          produto.ativo === false
+            ? 'Cadastro inicial do produto | Produto inativo'
+            : 'Cadastro inicial do produto'
+      };
+    });
 
     const itensEntrada = entradas
-      .filter((item) => produtoMap.has(item.produtoId))
-      .map<HistoricoItem>((entrada) => {
-        const produto = produtoMap.get(entrada.produtoId)!;
+      .filter((entrada) => produtoMap.has(entrada.produtoId))
+      .map((entrada) => {
+        const produto = produtoMap.get(entrada.produtoId);
+
         return {
+          id: entrada.id,
           data: entrada.data,
+          createdAt: entrada.createdAt || entrada.data,
           produto: `${produto.nome}${produto.modelo ? ' - ' + produto.modelo : ''}`,
           tipo: 'ENTRADA',
           quantidade: entrada.quantidade,
@@ -49,11 +63,14 @@ export async function initHistoricoPage(): Promise<void> {
       });
 
     const itensSaida = saidas
-      .filter((item) => produtoMap.has(item.produtoId))
-      .map<HistoricoItem>((saida) => {
-        const produto = produtoMap.get(saida.produtoId)!;
+      .filter((saida) => produtoMap.has(saida.produtoId))
+      .map((saida) => {
+        const produto = produtoMap.get(saida.produtoId);
+
         return {
+          id: saida.id,
           data: saida.data,
+          createdAt: saida.createdAt || saida.data,
           produto: `${produto.nome}${produto.modelo ? ' - ' + produto.modelo : ''}`,
           tipo: 'SAÍDA',
           quantidade: saida.quantidade,
@@ -63,9 +80,9 @@ export async function initHistoricoPage(): Promise<void> {
         };
       });
 
-    const historico = [...cadastro, ...itensEntrada, ...itensSaida].sort((a, b) =>
-      sortDateOnlyDesc(a.data, b.data)
-    );
+    const historico = [...cadastro, ...itensEntrada, ...itensSaida].sort((a, b) => {
+      return getEventOrder(b).localeCompare(getEventOrder(a));
+    });
 
     if (historico.length === 0) {
       setHTML('historico-table', '<div class="empty-state">Nenhuma movimentação encontrada.</div>');
@@ -74,7 +91,9 @@ export async function initHistoricoPage(): Promise<void> {
 
     const rows = historico
       .map((item) => {
-        const badgeClass = item.tipo === 'ENTRADA' ? 'in-stock' : item.tipo === 'SAÍDA' ? 'low-stock' : 'out-stock';
+        const badgeClass =
+          item.tipo === 'ENTRADA' ? 'in-stock' : item.tipo === 'SAÍDA' ? 'low-stock' : 'out-stock';
+
         return `
           <tr>
             <td>${formatDateBR(item.data)}</td>
@@ -92,6 +111,7 @@ export async function initHistoricoPage(): Promise<void> {
     setHTML(
       'historico-table',
       `
+        <p class="table-scroll-note">Arraste a tabela para o lado para ver todas as informações.</p>
         <div class="table-responsive">
           <table class="table table-kinetic align-middle">
             <thead>

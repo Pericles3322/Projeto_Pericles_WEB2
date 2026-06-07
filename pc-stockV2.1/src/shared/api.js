@@ -1,55 +1,6 @@
-export interface Usuario {
-  id: number;
-  email: string;
-  senha: string;
-}
-
-export interface Produto {
-  id: number;
-  usuarioId: number;
-  nome: string;
-  modelo: string;
-  tipo: string;
-  especificacoes_tecnicas: string;
-  informacoes_adicionais: string;
-  valor_venda: number;
-  quantidade_estoque: number;
-  data_cadastro: string;
-  ativo: boolean;
-}
-
-export interface Entrada {
-  id: number;
-  produtoId: number;
-  quantidade: number;
-  valor_unitario: number;
-  lote: string;
-  remetente: string;
-  distribuidor: string;
-  data: string;
-}
-
-export interface Saida {
-  id: number;
-  produtoId: number;
-  quantidade: number;
-  valor_unitario: number | null;
-  motivo: string;
-  destinatario: string | null;
-  data: string;
-}
-
-interface AppDatabase {
-  usuarios: Usuario[];
-  produtos: Produto[];
-  entradas: Entrada[];
-  saidas: Saida[];
-}
-
 const API_BASE_URL = 'http://localhost:3000';
 const LOCAL_DB_KEY = 'pcstock_local_db';
-
-const DEFAULT_DB: AppDatabase = {
+const DEFAULT_DB = {
   usuarios: [
     {
       id: 1,
@@ -118,8 +69,7 @@ const DEFAULT_DB: AppDatabase = {
     }
   ]
 };
-
-function toNumber(value: unknown): number {
+function toNumber(value) {
   if (typeof value === 'number') return value;
   if (typeof value === 'string') {
     const parsed = Number(value.trim());
@@ -127,16 +77,14 @@ function toNumber(value: unknown): number {
   }
   return 0;
 }
-
-function normalizeUsuario(item: Partial<Usuario> & Record<string, unknown>): Usuario {
+function normalizeUsuario(item) {
   return {
     id: toNumber(item.id),
     email: String(item.email ?? ''),
     senha: String(item.senha ?? '')
   };
 }
-
-function normalizeProduto(item: Partial<Produto> & Record<string, unknown>): Produto {
+function normalizeProduto(item) {
   return {
     id: toNumber(item.id),
     usuarioId: toNumber(item.usuarioId),
@@ -147,12 +95,13 @@ function normalizeProduto(item: Partial<Produto> & Record<string, unknown>): Pro
     informacoes_adicionais: String(item.informacoes_adicionais ?? ''),
     valor_venda: toNumber(item.valor_venda),
     quantidade_estoque: toNumber(item.quantidade_estoque),
+    quantidade_cadastro: toNumber(item.quantidade_cadastro ?? 0),
     data_cadastro: String(item.data_cadastro ?? ''),
+    createdAt: String(item.createdAt ?? item.data_cadastro ?? ''),
     ativo: item.ativo !== false
   };
 }
-
-function normalizeEntrada(item: Partial<Entrada> & Record<string, unknown>): Entrada {
+function normalizeEntrada(item) {
   return {
     id: toNumber(item.id),
     produtoId: toNumber(item.produtoId),
@@ -161,11 +110,11 @@ function normalizeEntrada(item: Partial<Entrada> & Record<string, unknown>): Ent
     lote: String(item.lote ?? ''),
     remetente: String(item.remetente ?? ''),
     distribuidor: String(item.distribuidor ?? ''),
-    data: String(item.data ?? '')
+    data: String(item.data ?? ''),
+    createdAt: String(item.createdAt ?? item.data ?? '')
   };
 }
-
-function normalizeSaida(item: Partial<Saida> & Record<string, unknown>): Saida {
+function normalizeSaida(item) {
   return {
     id: toNumber(item.id),
     produtoId: toNumber(item.produtoId),
@@ -173,33 +122,38 @@ function normalizeSaida(item: Partial<Saida> & Record<string, unknown>): Saida {
     valor_unitario: item.valor_unitario == null ? null : toNumber(item.valor_unitario),
     motivo: String(item.motivo ?? ''),
     destinatario: item.destinatario == null ? null : String(item.destinatario),
-    data: String(item.data ?? '')
+    data: String(item.data ?? ''),
+    createdAt: String(item.createdAt ?? item.data ?? '')
   };
 }
-
-function normalizeDB(raw: Partial<AppDatabase> | null | undefined): AppDatabase {
+function normalizeDB(raw) {
   return {
-    usuarios: Array.isArray(raw?.usuarios) ? raw!.usuarios.map((item) => normalizeUsuario(item as Record<string, unknown>)) : cloneDefaultDB().usuarios,
-    produtos: Array.isArray(raw?.produtos) ? raw!.produtos.map((item) => normalizeProduto(item as Record<string, unknown>)) : cloneDefaultDB().produtos,
-    entradas: Array.isArray(raw?.entradas) ? raw!.entradas.map((item) => normalizeEntrada(item as Record<string, unknown>)) : cloneDefaultDB().entradas,
-    saidas: Array.isArray(raw?.saidas) ? raw!.saidas.map((item) => normalizeSaida(item as Record<string, unknown>)) : cloneDefaultDB().saidas
+    usuarios: Array.isArray(raw?.usuarios)
+      ? raw.usuarios.map((item) => normalizeUsuario(item))
+      : cloneDefaultDB().usuarios,
+    produtos: Array.isArray(raw?.produtos)
+      ? raw.produtos.map((item) => normalizeProduto(item))
+      : cloneDefaultDB().produtos,
+    entradas: Array.isArray(raw?.entradas)
+      ? raw.entradas.map((item) => normalizeEntrada(item))
+      : cloneDefaultDB().entradas,
+    saidas: Array.isArray(raw?.saidas)
+      ? raw.saidas.map((item) => normalizeSaida(item))
+      : cloneDefaultDB().saidas
   };
 }
-
-function cloneDefaultDB(): AppDatabase {
-  return JSON.parse(JSON.stringify(DEFAULT_DB)) as AppDatabase;
+function cloneDefaultDB() {
+  return JSON.parse(JSON.stringify(DEFAULT_DB));
 }
-
-function loadLocalDB(): AppDatabase {
+function loadLocalDB() {
   const raw = localStorage.getItem(LOCAL_DB_KEY);
   if (!raw) {
     const initial = cloneDefaultDB();
     saveLocalDB(initial);
     return initial;
   }
-
   try {
-    const parsed = JSON.parse(raw) as AppDatabase;
+    const parsed = JSON.parse(raw);
     const normalized = normalizeDB(parsed);
     saveLocalDB(normalized);
     return normalized;
@@ -209,53 +163,43 @@ function loadLocalDB(): AppDatabase {
     return initial;
   }
 }
-
-function saveLocalDB(db: AppDatabase): void {
+function saveLocalDB(db) {
   localStorage.setItem(LOCAL_DB_KEY, JSON.stringify(normalizeDB(db)));
 }
-
-function syncCollection<K extends keyof AppDatabase>(key: K, items: AppDatabase[K]): void {
+function syncCollection(key, items) {
   const db = loadLocalDB();
   db[key] = items;
   saveLocalDB(db);
 }
-
-function nextId<T extends { id: number }>(items: T[]): number {
+function nextId(items) {
   return items.length ? Math.max(...items.map((item) => toNumber(item.id))) + 1 : 1;
 }
-
-async function apiRequest<T>(path: string, init?: RequestInit): Promise<T> {
+async function apiRequest(path, init) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     headers: { 'Content-Type': 'application/json' },
     ...init
   });
-
   if (!response.ok) {
     throw new Error(`Erro na API: ${response.status}`);
   }
-
   if (response.status === 204) {
-    return undefined as T;
+    return undefined;
   }
-
-  return response.json() as Promise<T>;
+  return response.json();
 }
-
-export async function getUsuarios(): Promise<Usuario[]> {
+export async function getUsuarios() {
   try {
-    const usuarios = (await apiRequest<Record<string, unknown>[]>('/usuarios')).map(normalizeUsuario);
+    const usuarios = (await apiRequest('/usuarios')).map(normalizeUsuario);
     syncCollection('usuarios', usuarios);
     return usuarios;
   } catch {
     return loadLocalDB().usuarios;
   }
 }
-
-export async function getProdutos(usuarioId?: number): Promise<Produto[]> {
+export async function getProdutos(usuarioId) {
   try {
     const query = typeof usuarioId === 'number' ? `?usuarioId=${usuarioId}` : '';
-    const produtos = (await apiRequest<Record<string, unknown>[]>(`/produtos${query}`)).map(normalizeProduto);
-
+    const produtos = (await apiRequest(`/produtos${query}`)).map(normalizeProduto);
     if (typeof usuarioId === 'number') {
       const db = loadLocalDB();
       const otherUsers = db.produtos.filter((item) => item.usuarioId !== usuarioId);
@@ -264,19 +208,15 @@ export async function getProdutos(usuarioId?: number): Promise<Produto[]> {
     } else {
       syncCollection('produtos', produtos);
     }
-
     return produtos;
   } catch {
     const produtos = loadLocalDB().produtos;
-    return typeof usuarioId === 'number'
-      ? produtos.filter((item) => item.usuarioId === usuarioId)
-      : produtos;
+    return typeof usuarioId === 'number' ? produtos.filter((item) => item.usuarioId === usuarioId) : produtos;
   }
 }
-
-export async function getProdutoById(id: number): Promise<Produto | null> {
+export async function getProdutoById(id) {
   try {
-    const produto = normalizeProduto(await apiRequest<Record<string, unknown>>(`/produtos/${id}`));
+    const produto = normalizeProduto(await apiRequest(`/produtos/${id}`));
     const db = loadLocalDB();
     const index = db.produtos.findIndex((item) => item.id === id);
     if (index >= 0) db.produtos[index] = produto;
@@ -287,14 +227,12 @@ export async function getProdutoById(id: number): Promise<Produto | null> {
     return loadLocalDB().produtos.find((item) => item.id === id) ?? null;
   }
 }
-
-export async function createProduto(payload: Omit<Produto, 'id'>): Promise<Produto> {
+export async function createProduto(payload) {
   const db = loadLocalDB();
-  const produtoCompleto: Produto = normalizeProduto({ id: nextId(db.produtos), ...payload });
-
+  const produtoCompleto = normalizeProduto({ id: nextId(db.produtos), ...payload });
   try {
     const produto = normalizeProduto(
-      await apiRequest<Record<string, unknown>>('/produtos', {
+      await apiRequest('/produtos', {
         method: 'POST',
         body: JSON.stringify(produtoCompleto)
       })
@@ -309,11 +247,10 @@ export async function createProduto(payload: Omit<Produto, 'id'>): Promise<Produ
     return produtoCompleto;
   }
 }
-
-export async function patchProduto(id: number, payload: Partial<Produto>): Promise<Produto> {
+export async function patchProduto(id, payload) {
   try {
     const produto = normalizeProduto(
-      await apiRequest<Record<string, unknown>>(`/produtos/${id}`, {
+      await apiRequest(`/produtos/${id}`, {
         method: 'PATCH',
         body: JSON.stringify(payload)
       })
@@ -333,24 +270,21 @@ export async function patchProduto(id: number, payload: Partial<Produto>): Promi
     return db.produtos[index];
   }
 }
-
-export async function getEntradas(): Promise<Entrada[]> {
+export async function getEntradas() {
   try {
-    const entradas = (await apiRequest<Record<string, unknown>[]>('/entradas')).map(normalizeEntrada);
+    const entradas = (await apiRequest('/entradas')).map(normalizeEntrada);
     syncCollection('entradas', entradas);
     return entradas;
   } catch {
     return loadLocalDB().entradas;
   }
 }
-
-export async function createEntrada(payload: Omit<Entrada, 'id'>): Promise<Entrada> {
+export async function createEntrada(payload) {
   const db = loadLocalDB();
-  const entradaCompleta: Entrada = normalizeEntrada({ id: nextId(db.entradas), ...payload });
-
+  const entradaCompleta = normalizeEntrada({ id: nextId(db.entradas), ...payload });
   try {
     const entrada = normalizeEntrada(
-      await apiRequest<Record<string, unknown>>('/entradas', {
+      await apiRequest('/entradas', {
         method: 'POST',
         body: JSON.stringify(entradaCompleta)
       })
@@ -365,24 +299,21 @@ export async function createEntrada(payload: Omit<Entrada, 'id'>): Promise<Entra
     return entradaCompleta;
   }
 }
-
-export async function getSaidas(): Promise<Saida[]> {
+export async function getSaidas() {
   try {
-    const saidas = (await apiRequest<Record<string, unknown>[]>('/saidas')).map(normalizeSaida);
+    const saidas = (await apiRequest('/saidas')).map(normalizeSaida);
     syncCollection('saidas', saidas);
     return saidas;
   } catch {
     return loadLocalDB().saidas;
   }
 }
-
-export async function createSaida(payload: Omit<Saida, 'id'>): Promise<Saida> {
+export async function createSaida(payload) {
   const db = loadLocalDB();
-  const saidaCompleta: Saida = normalizeSaida({ id: nextId(db.saidas), ...payload });
-
+  const saidaCompleta = normalizeSaida({ id: nextId(db.saidas), ...payload });
   try {
     const saida = normalizeSaida(
-      await apiRequest<Record<string, unknown>>('/saidas', {
+      await apiRequest('/saidas', {
         method: 'POST',
         body: JSON.stringify(saidaCompleta)
       })

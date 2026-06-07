@@ -1,5 +1,5 @@
-import { createProduto, getProdutoById, getProdutos, patchProduto, type Produto } from './api';
-import { getCurrentUser } from './auth';
+import { createProduto, getProdutoById, getProdutos, patchProduto } from './api.js';
+import { getCurrentUser } from './auth.js';
 import {
   escapeHTML,
   formatCurrency,
@@ -8,9 +8,8 @@ import {
   qs,
   setHTML,
   showToast
-} from './utils';
-
-function getProdutoStatus(produto: Produto): { label: string; className: string } {
+} from './utils.js';
+function getProdutoStatus(produto) {
   if (produto.quantidade_estoque <= 0) {
     return { label: 'Zerado', className: 'out-stock' };
   }
@@ -19,11 +18,9 @@ function getProdutoStatus(produto: Produto): { label: string; className: string 
   }
   return { label: 'Em estoque', className: 'in-stock' };
 }
-
-export async function initPainelPage(): Promise<void> {
+export async function initPainelPage() {
   const user = getCurrentUser();
   if (!user) return;
-
   try {
     const produtos = (await getProdutos(user.id)).filter((item) => item.ativo !== false);
     renderResumo(produtos);
@@ -34,12 +31,10 @@ export async function initPainelPage(): Promise<void> {
     setHTML('produtos-table', '<div class="empty-state">Não foi possível carregar os produtos.</div>');
   }
 }
-
-function renderResumo(produtos: Produto[]): void {
+function renderResumo(produtos) {
   const totalProdutos = produtos.length;
   const totalUnidades = produtos.reduce((sum, item) => sum + item.quantidade_estoque, 0);
   const valorEstimado = produtos.reduce((sum, item) => sum + item.quantidade_estoque * item.valor_venda, 0);
-
   setHTML(
     'dashboard-kpis',
     `
@@ -67,13 +62,11 @@ function renderResumo(produtos: Produto[]): void {
     `
   );
 }
-
-function renderTabela(produtos: Produto[]): void {
+function renderTabela(produtos) {
   if (produtos.length === 0) {
     setHTML('produtos-table', '<div class="empty-state">Nenhum produto cadastrado até o momento.</div>');
     return;
   }
-
   const rows = produtos
     .map((produto) => {
       const status = getProdutoStatus(produto);
@@ -92,7 +85,7 @@ function renderTabela(produtos: Produto[]): void {
           <td>${formatDateBR(produto.data_cadastro)}</td>
           <td>
             <div class="d-flex flex-wrap gap-2">
-              <a class="btn btn-sm btn-outline-info" href="/novo_produto.html?id=${produto.id}" title="Editar produto">
+              <a class="btn btn-sm btn-outline-info" href="../new-product/?id=${produto.id}" title="Editar produto">
                 Editar
               </a>
               <button
@@ -109,10 +102,10 @@ function renderTabela(produtos: Produto[]): void {
       `;
     })
     .join('');
-
   setHTML(
     'produtos-table',
     `
+      <p class="table-scroll-note">Arraste a tabela para o lado para ver todas as informações.</p>
       <div class="table-responsive">
         <table class="table table-kinetic align-middle">
           <thead>
@@ -133,22 +126,18 @@ function renderTabela(produtos: Produto[]): void {
     `
   );
 }
-
-function bindDeleteButtons(produtos: Produto[]): void {
-  document.querySelectorAll<HTMLButtonElement>('[data-delete-id]').forEach((button) => {
+function bindDeleteButtons(produtos) {
+  document.querySelectorAll('[data-delete-id]').forEach((button) => {
     button.addEventListener('click', async () => {
       const id = Number(button.dataset.deleteId);
       const produto = produtos.find((item) => item.id === id);
-
       if (!produto) return;
       if (produto.quantidade_estoque !== 0) {
         showToast('Só é possível apagar produtos com estoque zerado.', 'error');
         return;
       }
-
       const confirmed = window.confirm(`Deseja apagar o produto "${produto.nome}" do inventário?`);
       if (!confirmed) return;
-
       try {
         await patchProduto(id, { ativo: false });
         showToast('Produto removido do inventário.');
@@ -160,14 +149,11 @@ function bindDeleteButtons(produtos: Produto[]): void {
     });
   });
 }
-
-export async function initNovoProdutoPage(): Promise<void> {
+export async function initNovoProdutoPage() {
   const user = getCurrentUser();
   if (!user) return;
-
-  const form = document.getElementById('produto-form') as HTMLFormElement | null;
+  const form = document.getElementById('produto-form');
   if (!form) return;
-
   const pageTitle = document.querySelector('.app-topbar h2');
   const sectionTitle = document.querySelector('.form-card h3');
   const sectionNote = document.querySelector('.form-card .page-note');
@@ -175,26 +161,22 @@ export async function initNovoProdutoPage(): Promise<void> {
   const url = new URL(window.location.href);
   const editingId = Number(url.searchParams.get('id'));
   const isEditing = Number.isFinite(editingId) && editingId > 0;
-
-  let produtoAtual: Produto | null = null;
-
+  let produtoAtual = null;
   if (isEditing) {
     try {
       const produto = await getProdutoById(editingId);
       if (!produto || produto.usuarioId !== user.id) {
         showToast('Produto não encontrado para edição.', 'error');
-        window.location.href = '/painel.html';
+        window.location.href = '../dashboard/';
         return;
       }
-
       produtoAtual = produto;
-      qs<HTMLInputElement>('#nome').value = produto.nome;
-      qs<HTMLInputElement>('#modelo').value = produto.modelo;
-      qs<HTMLInputElement>('#tipo').value = produto.tipo;
-      qs<HTMLInputElement>('#valor_venda').value = String(produto.valor_venda ?? '');
-      qs<HTMLTextAreaElement>('#especificacoes_tecnicas').value = produto.especificacoes_tecnicas;
-      qs<HTMLTextAreaElement>('#informacoes_adicionais').value = produto.informacoes_adicionais;
-
+      qs('#nome').value = produto.nome;
+      qs('#modelo').value = produto.modelo;
+      qs('#tipo').value = produto.tipo;
+      qs('#valor_venda').value = String(produto.valor_venda ?? '');
+      qs('#especificacoes_tecnicas').value = produto.especificacoes_tecnicas;
+      qs('#informacoes_adicionais').value = produto.informacoes_adicionais;
       if (pageTitle) pageTitle.textContent = 'Editar Produto';
       if (sectionTitle) sectionTitle.textContent = 'Editar produto';
       if (sectionNote) {
@@ -208,25 +190,21 @@ export async function initNovoProdutoPage(): Promise<void> {
       return;
     }
   }
-
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-
     const payload = {
       usuarioId: user.id,
-      nome: qs<HTMLInputElement>('#nome').value.trim(),
-      modelo: qs<HTMLInputElement>('#modelo').value.trim(),
-      tipo: qs<HTMLInputElement>('#tipo').value.trim(),
-      especificacoes_tecnicas: qs<HTMLTextAreaElement>('#especificacoes_tecnicas').value.trim(),
-      informacoes_adicionais: qs<HTMLTextAreaElement>('#informacoes_adicionais').value.trim(),
-      valor_venda: Number(qs<HTMLInputElement>('#valor_venda').value || 0)
+      nome: qs('#nome').value.trim(),
+      modelo: qs('#modelo').value.trim(),
+      tipo: qs('#tipo').value.trim(),
+      especificacoes_tecnicas: qs('#especificacoes_tecnicas').value.trim(),
+      informacoes_adicionais: qs('#informacoes_adicionais').value.trim(),
+      valor_venda: Number(qs('#valor_venda').value || 0)
     };
-
     if (!payload.nome) {
       showToast('Informe pelo menos o nome do produto.', 'error');
       return;
     }
-
     try {
       if (produtoAtual) {
         await patchProduto(produtoAtual.id, {
@@ -239,22 +217,26 @@ export async function initNovoProdutoPage(): Promise<void> {
         });
         showToast('Produto atualizado com sucesso.');
         window.setTimeout(() => {
-          window.location.href = '/painel.html';
+          window.location.href = '../dashboard/';
         }, 450);
         return;
       }
-
       await createProduto({
         ...payload,
         quantidade_estoque: 0,
+        quantidade_cadastro: 0,
         data_cadastro: getTodayLocalISO(),
+        createdAt: new Date().toISOString(),
         ativo: true
       });
       showToast('Produto cadastrado com sucesso.');
       form.reset();
     } catch (error) {
       console.error(error);
-      showToast(produtoAtual ? 'Não foi possível atualizar o produto.' : 'Não foi possível cadastrar o produto.', 'error');
+      showToast(
+        produtoAtual ? 'Não foi possível atualizar o produto.' : 'Não foi possível cadastrar o produto.',
+        'error'
+      );
     }
   });
 }

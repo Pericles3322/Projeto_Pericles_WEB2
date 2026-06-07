@@ -1,0 +1,113 @@
+@use '../abstracts/variables' as v;
+@use '../abstracts/mixins' as m;
+
+.table-card {
+  padding: 1.2rem;
+}
+
+.table-responsive {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-color: var(--primary-cyan) rgba(255, 255, 255, 0.08);
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 0.55rem;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--primary-cyan);
+    border-radius: 999px;
+  }
+}
+
+.table-kinetic {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--text-main);
+  --bs-table-border-color: rgba(255, 255, 255, 0.06);
+  margin-bottom: 0;
+  min-width: 860px;
+
+  thead th {
+    color: var(--secondary-cyan);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-bottom: none;
+    background-color: rgba(255, 255, 255, 0.02);
+    white-space: nowrap;
+  }
+
+  tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+
+  td {
+    vertical-align: middle;
+  }
+}
+
+body[data-page='dashboard'] .table-kinetic {
+  min-width: 980px;
+}
+
+body[data-page='history'] .table-kinetic {
+  min-width: 1120px;
+}
+
+.pill-status,
+.pill-sku {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.pill-sku {
+  font-family: monospace;
+  background-color: #0f0f0f;
+  color: #98a9ac;
+}
+
+.pill-status {
+  &.in-stock {
+    @include m.status-pill(rgba(102, 217, 204, 0.12), var(--secondary-cyan));
+  }
+
+  &.low-stock,
+  &.out-stock {
+    @include m.status-pill(rgba(255, 180, 171, 0.12), var(--danger-soft));
+  }
+}
+
+.table-scroll-note {
+  display: none;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 767.98px) {
+  .table-card {
+    padding: 1rem;
+  }
+
+  .table-responsive {
+    margin-inline: -0.15rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .table-scroll-note {
+    display: block;
+  }
+}
