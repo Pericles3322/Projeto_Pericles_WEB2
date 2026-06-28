@@ -3,6 +3,7 @@ import { resolve } from 'path';
 
 export default defineConfig({
   base: '/Projeto_Pericles_WEB2/',
+
   build: {
     rollupOptions: {
       input: {
@@ -12,8 +13,8 @@ export default defineConfig({
         newProduct: resolve(__dirname, 'pages/new-product/index.html'),
         stockEntry: resolve(__dirname, 'pages/stock-entry/index.html'),
         stockExit: resolve(__dirname, 'pages/stock-exit/index.html'),
-        history: resolve(__dirname, 'pages/history/index.html')
-      }
-    }
-  }
+        history: resolve(__dirname, 'pages/history/index.html'),
+      },
+    },
+  },
 });

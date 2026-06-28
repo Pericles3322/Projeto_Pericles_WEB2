@@ -1,0 +1,56 @@
+name: Publicar PC-Stock no GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositório
+        uses: actions/checkout@v7
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: pc-stockV2.1/package-lock.json
+
+      - name: Instalar dependências
+        run: npm ci
+        working-directory: pc-stockV2.1
+
+      - name: Gerar build
+        run: npm run build
+        working-directory: pc-stockV2.1
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v6
+
+      - name: Enviar arquivos do site
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: pc-stockV2.1/dist
+
+      - name: Publicar site
+        id: deployment
+        uses: actions/deploy-pages@v5
