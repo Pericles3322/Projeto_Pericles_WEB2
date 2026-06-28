@@ -10,6 +10,7 @@
   --text-muted: #bac9cc;
   --danger-soft: #ffb4ab;
   --shadow-soft: 0 14px 30px rgba(0, 0, 0, 0.32);
+  --border-soft: rgba(255, 255, 255, 0.08);
 }
 
 * {
@@ -227,6 +228,7 @@ h3 {
   color: var(--text-main);
   border: none;
   border-radius: 0.85rem;
+  padding: 0.95rem 1.3rem;
 }
 .btn-surface:hover {
   background-color: var(--surface-highest);
@@ -280,11 +282,11 @@ h3 {
   vertical-align: middle;
 }
 
-body[data-page=dashboard] .table-kinetic {
+body[data-page=painel] .table-kinetic {
   min-width: 980px;
 }
 
-body[data-page=history] .table-kinetic {
+body[data-page=historico] .table-kinetic {
   min-width: 1120px;
 }
 
@@ -476,10 +478,44 @@ body[data-page=novo-produto] .form-card {
   position: relative;
   overflow: hidden;
 }
+body[data-page=novo-produto] .saved-product-card {
+  border: 1px solid var(--border-soft);
+  border-radius: 0.9rem;
+  background: var(--surface-high);
+}
+body[data-page=novo-produto] .was-validated .form-control:valid,
+body[data-page=novo-produto] .was-validated .form-textarea-kinetic:valid {
+  border: 1px solid var(--bs-success);
+}
+body[data-page=novo-produto] .was-validated .form-control:invalid,
+body[data-page=novo-produto] .was-validated .form-textarea-kinetic:invalid {
+  border: 1px solid var(--bs-danger);
+}
 
 body[data-page=entrada] .form-card {
   position: relative;
   overflow: hidden;
+}
+body[data-page=entrada] .input-group > .form-control-kinetic {
+  min-width: 9rem;
+}
+body[data-page=entrada] .input-group .btn-surface {
+  border-radius: 0 0.85rem 0.85rem 0;
+}
+body[data-page=entrada] input[readonly] {
+  color: var(--text-muted);
+  cursor: default;
+}
+@media (max-width: 575.98px) {
+  body[data-page=entrada] .input-group {
+    display: grid;
+    gap: 0.65rem;
+  }
+  body[data-page=entrada] .input-group > .form-control,
+  body[data-page=entrada] .input-group > .btn {
+    width: 100%;
+    border-radius: 0.85rem;
+  }
 }
 
 body[data-page=saida] .form-card {

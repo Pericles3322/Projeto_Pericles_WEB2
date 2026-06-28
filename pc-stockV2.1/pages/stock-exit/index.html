@@ -3,7 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../assets/styles/bootstrap.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="../../assets/styles/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -69,7 +74,8 @@
             <form id="saida-form" class="row g-4">
               <div class="col-md-6">
                 <label class="form-label-kinetic" for="produto_id_saida">Produto</label>
-                <select id="produto_id_saida" class="form-select form-select-kinetic"></select>
+                <select id="produto_id_saida" class="form-select form-select-kinetic" required></select>
+                <div class="invalid-feedback">Selecione um produto.</div>
               </div>
               <div class="col-md-3">
                 <label class="form-label-kinetic" for="quantidade_saida">Quantidade</label>
@@ -79,6 +85,7 @@
                   type="number"
                   min="1"
                   placeholder="0"
+                  required
                 />
               </div>
               <div class="col-md-3">
@@ -112,7 +119,7 @@
               </div>
               <div class="col-md-4">
                 <label class="form-label-kinetic" for="data_saida">Data</label>
-                <input id="data_saida" class="form-control form-control-kinetic" type="date" />
+                <input id="data_saida" class="form-control form-control-kinetic" type="date" required />
               </div>
               <div class="col-12 d-flex flex-column flex-md-row justify-content-md-end gap-3">
                 <a class="btn btn-surface" href="../dashboard/">Cancelar</a>
@@ -156,6 +163,12 @@
         ><span class="material-symbols-outlined d-block">history</span>Histórico</a
       >
     </nav>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
 
     <script type="module" src="./stock-exit.js"></script>
   </body>

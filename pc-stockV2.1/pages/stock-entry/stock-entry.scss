@@ -3,4 +3,30 @@ body[data-page='entrada'] {
     position: relative;
     overflow: hidden;
   }
+
+  .input-group > .form-control-kinetic {
+    min-width: 9rem;
+  }
+
+  .input-group .btn-surface {
+    border-radius: 0 0.85rem 0.85rem 0;
+  }
+
+  input[readonly] {
+    color: var(--text-muted);
+    cursor: default;
+  }
+
+  @media (max-width: 575.98px) {
+    .input-group {
+      display: grid;
+      gap: 0.65rem;
+    }
+
+    .input-group > .form-control,
+    .input-group > .btn {
+      width: 100%;
+      border-radius: 0.85rem;
+    }
+  }
 }

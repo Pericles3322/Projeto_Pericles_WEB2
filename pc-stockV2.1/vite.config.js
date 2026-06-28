@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { resolve } from 'path';
 
 export default defineConfig({
+  base: '/Projeto_Pericles_WEB2/',
   build: {
     rollupOptions: {
       input: {

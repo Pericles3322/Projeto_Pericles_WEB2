@@ -3,4 +3,22 @@ body[data-page='novo-produto'] {
     position: relative;
     overflow: hidden;
   }
+
+  .saved-product-card {
+    border: 1px solid var(--border-soft);
+    border-radius: 0.9rem;
+    background: var(--surface-high);
+  }
+
+  .was-validated {
+    .form-control:valid,
+    .form-textarea-kinetic:valid {
+      border: 1px solid var(--bs-success);
+    }
+
+    .form-control:invalid,
+    .form-textarea-kinetic:invalid {
+      border: 1px solid var(--bs-danger);
+    }
+  }
 }

@@ -2,8 +2,7 @@
 
 ### **Autor:** Péricles Expedito Andrade
 
-Este projeto tem o foco de gerenciar e registrar quantidade de itens de peças de computadores dentro de um estoque, registrando saidas e entradas, com o foco em registrar de 
-onde esta sendo comprado e seu fornecedor e em qual plataforma ou mercado de varejo foi vendido (amazon,mercado livre, loja fisica, etc), registrando as especificaçoes de cada produto
+Este projeto tem o foco de gerenciar e registrar quantidade de itens de peças de computadores dentro de um estoque, registrando saidas e entradas, com o foco em registrar de onde esta sendo comprado e seu fornecedor e em qual plataforma ou mercado de varejo foi vendido (amazon,mercado livre, loja fisica, etc), registrando as especificaçoes de cada produto
 (Marca, Modelo, tipo de hardware, especificaçoes).
 
 O frontend da aplicação foi desenvolvido com HTML, CSS e JavaScript e o backend foi simulado pela implementação de uma API Fake, usando o JSON Server.
@@ -26,7 +25,7 @@ Para entender as regras de negócio, o escopo e a arquitetura técnica da aplica
 
 ## 💻 Tecnologias e Dependências
 
-No desenvolvimento da interface do projeto foi utilizado o **Bootstrap 5.3.8** como Framework CSS, com o objetivo de facilitar a criação de um layout responsivo e organizado para desktop, tablet e mobile. 
+No desenvolvimento da interface do projeto foi utilizado o **Bootstrap 5.3.8** como Framework CSS, com o objetivo de facilitar a criação de um layout responsivo e organizado para desktop, tablet e mobile.
 A escolha do Bootstrap foi feita por ele possuir uma grande variedade de componentes prontos, como formulários, botões, tabelas, menus e sistema de grid,
 o que ajudou bastante na construção das telas do sistema. Além disso, é uma tecnologia muito utilizada e bem mantida com atualizaçoes constantes no GitHub, o que traz mais segurança para o desenvolvimento e evolução do projeto.
 
@@ -42,6 +41,11 @@ O projeto usa dois arquivos CSS compilados:
 - `assets/styles/style.css`: CSS personalizado do PC-Stock compilado a partir de `assets/scss/main.scss` e dos SCSS de componentes/telas.
 
 Esse formato separa o framework dos estilos próprios do projeto, facilitando a manutenção e a explicação da atividade. Para alterar o visual do sistema, edite os arquivos `.scss`, não os arquivos `.css` compilados.
+
+Cada tela possui seu arquivo em `pc-stockV2.1/pages/<tela>/<tela>.scss`. Esses arquivos
+são importados pelo `assets/scss/main.scss` e compilados juntos em
+`assets/styles/style.css`. Os CSS individuais das páginas foram removidos para evitar
+edições acidentais em arquivos gerados.
 
 ## Rodando localmente
 
@@ -100,7 +104,7 @@ npm run build         # compila SCSS e gera build do Vite
 #### RA2 - Realizar tratamento de formulários e aplicar validações customizadas no lado cliente.
 
 - [x] ID 11 - Implementa validação HTML nativa (campos obrigatórios, tipos, limites de caracteres) com mensagens de erro/sucesso no lado cliente.
-- [x] ID 12 - Aplica expressões regulares (REGEX) para validações customizadas (e-mail, telefone, datas, etc.)
+- [x] ID 12 - Aplica REGEX para validar e-mail, código de lote e CNPJ do fornecedor.
 - [x] ID 13 - Utiliza elementos de seleção em formulários (checkbox, radio, select) para coleta de dados.
 - [x] ID 14 - Implementa leitura e escrita no Web Storage (localStorage/sessionStorage) para persistir dados localmente.
 
@@ -114,14 +118,34 @@ npm run build         # compila SCSS e gera build do Vite
 
 #### RA4 - Aplicar bibliotecas de funções e componentes em JavaScript para aprimorar a interatividade de páginas web.
 
-- [x] ID 20 - Utiliza jQuery para manipulação do DOM e interatividade (eventos, animações, manipulação de elementos)
-- [x] ID 21 - Integra e configura um plugin jQuery relevante (ex.: jQuery Mask Plugin).
+- [x] ID 20 - Utiliza jQuery no filtro dinâmico e animado dos produtos do painel.
+- [x] ID 21 - Integra o jQuery Mask Plugin para aplicar máscara ao CNPJ do fornecedor.
 
 #### RA5 - Efetuar requisições assíncronas para uma API fake e APIs públicas, permitindo a obtenção e manipulação de dados dinamicamente.
 
 - [x] ID 22 - Realiza requisições assíncronas para uma API fake (ex.: JSON Server) para persistir dados de um formulário.
 - [x] ID 23 - Realiza requisições assíncronas para uma API fake para exibir dados na página.
-- [x] ID 24 - Realiza requisições assíncronas para APIs públicas reais (OpenWeather, ViaCEP etc.), exibindo os dados e tratando erros.
+- [x] ID 24 - Consulta produtos em uma API pública da RapidAPI, exibe resultados e trata carregamento e erros.
+
+## Integração com RapidAPI
+
+A tela **Novo Produto** consulta a API pública **Real-Time Amazon Data** por meio de um
+proxy executado pelo Vite. A chave fica somente no servidor de desenvolvimento e não é
+incluída no JavaScript enviado ao navegador.
+
+1. Crie uma conta na [RapidAPI](https://rapidapi.com/).
+2. Procure por `Real-Time Amazon Data` e assine um plano disponível.
+3. Na pasta `pc-stockV2.1`, copie `.env.example` para `.env`.
+4. Substitua `sua_chave_aqui` pela sua `X-RapidAPI-Key`.
+5. Reinicie `npm run dev`.
+
+```bash
+cp .env.example .env
+```
+
+O JSON Server deve continuar em execução, pois ele atende à persistência e aos IDs 22 e 23. O proxy da RapidAPI funciona durante `npm run dev`. Para publicar esse recurso no
+GitHub Pages será necessário hospedar o proxy em um backend ou função serverless, pois o
+GitHub Pages publica apenas arquivos estáticos.
 
 ## 🚀 Manual de execução
 
@@ -142,4 +166,3 @@ npm run build         # compila SCSS e gera build do Vite
 - Executar o projeto frontend.
 
 ## 📱 Telas da aplicação
-

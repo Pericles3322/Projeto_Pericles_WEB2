@@ -3,7 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../assets/styles/bootstrap.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="../../assets/styles/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -65,7 +70,8 @@
             <form id="entrada-form" class="row g-4">
               <div class="col-md-6">
                 <label class="form-label-kinetic" for="produto_id_entrada">Produto</label>
-                <select id="produto_id_entrada" class="form-select form-select-kinetic"></select>
+                <select id="produto_id_entrada" class="form-select form-select-kinetic" required></select>
+                <div class="invalid-feedback">Selecione um produto.</div>
               </div>
               <div class="col-md-3">
                 <label class="form-label-kinetic" for="quantidade_entrada">Quantidade</label>
@@ -75,6 +81,7 @@
                   type="number"
                   min="1"
                   placeholder="0"
+                  required
                 />
               </div>
               <div class="col-md-3">
@@ -94,8 +101,14 @@
                   id="lote"
                   class="form-control form-control-kinetic"
                   type="text"
-                  placeholder="Lote-2026-04-A"
+                  placeholder="Ex.: 2026-03-A123"
+                  autocomplete="off"
+                  maxlength="22"
+                  aria-describedby="lote-ajuda"
                 />
+                <div id="lote-ajuda" class="form-text">
+                  Informe ano, mês e código. Os hífens são adicionados automaticamente.
+                </div>
               </div>
               <div class="col-md-4">
                 <label class="form-label-kinetic" for="remetente">Remetente</label>
@@ -116,8 +129,97 @@
                 />
               </div>
               <div class="col-md-4">
+                <label class="form-label-kinetic" for="cnpj_fornecedor">CNPJ do fornecedor</label>
+                <input
+                  id="cnpj_fornecedor"
+                  class="form-control form-control-kinetic"
+                  type="text"
+                  inputmode="numeric"
+                  placeholder="00.000.000/0000-00"
+                  maxlength="18"
+                />
+              </div>
+              <div class="col-md-4">
                 <label class="form-label-kinetic" for="data_entrada">Data</label>
-                <input id="data_entrada" class="form-control form-control-kinetic" type="date" />
+                <input id="data_entrada" class="form-control form-control-kinetic" type="date" required />
+              </div>
+
+              <div class="col-12 mt-2">
+                <div class="section-eyebrow">API pública ViaCEP</div>
+                <h4 class="h5 mb-1">Endereço do fornecedor</h4>
+                <p class="page-note small mb-0">
+                  Digite um CEP brasileiro para preencher o endereço sem recarregar a página.
+                </p>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label-kinetic" for="cep_fornecedor">CEP</label>
+                <div class="input-group">
+                  <input
+                    id="cep_fornecedor"
+                    class="form-control form-control-kinetic"
+                    type="text"
+                    inputmode="numeric"
+                    placeholder="00000-000"
+                    pattern="\d{5}-?\d{3}"
+                    maxlength="9"
+                    aria-describedby="cep-status"
+                  />
+                  <button id="buscar-cep" class="btn btn-surface" type="button">Buscar endereço</button>
+                </div>
+                <div id="cep-status" class="form-text text-secondary" aria-live="polite">
+                  Digite o CEP e clique em Buscar endereço.
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-kinetic" for="logradouro_fornecedor">Rua</label>
+                <input
+                  id="logradouro_fornecedor"
+                  class="form-control form-control-kinetic"
+                  type="text"
+                  placeholder="Preenchida pelo ViaCEP"
+                  readonly
+                />
+              </div>
+              <div class="col-md-2">
+                <label class="form-label-kinetic" for="numero_fornecedor">Número</label>
+                <input
+                  id="numero_fornecedor"
+                  class="form-control form-control-kinetic"
+                  type="text"
+                  maxlength="10"
+                  placeholder="123"
+                />
+              </div>
+              <div class="col-md-5">
+                <label class="form-label-kinetic" for="bairro_fornecedor">Bairro</label>
+                <input
+                  id="bairro_fornecedor"
+                  class="form-control form-control-kinetic"
+                  type="text"
+                  placeholder="Preenchido pelo ViaCEP"
+                  readonly
+                />
+              </div>
+              <div class="col-md-5">
+                <label class="form-label-kinetic" for="cidade_fornecedor">Cidade</label>
+                <input
+                  id="cidade_fornecedor"
+                  class="form-control form-control-kinetic"
+                  type="text"
+                  placeholder="Preenchida pelo ViaCEP"
+                  readonly
+                />
+              </div>
+              <div class="col-md-2">
+                <label class="form-label-kinetic" for="uf_fornecedor">UF</label>
+                <input
+                  id="uf_fornecedor"
+                  class="form-control form-control-kinetic text-uppercase"
+                  type="text"
+                  maxlength="2"
+                  placeholder="PR"
+                  readonly
+                />
               </div>
               <div class="col-12 d-flex flex-column flex-md-row justify-content-md-end gap-3">
                 <a class="btn btn-surface" href="../dashboard/">Cancelar</a>
@@ -141,6 +243,16 @@
         ><span class="material-symbols-outlined d-block">history</span>Histórico</a
       >
     </nav>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
 
     <script type="module" src="./stock-entry.js"></script>
   </body>

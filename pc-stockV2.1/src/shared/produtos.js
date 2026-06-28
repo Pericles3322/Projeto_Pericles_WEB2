@@ -1,5 +1,6 @@
 import { createProduto, getProdutoById, getProdutos, patchProduto } from './api.js';
 import { getCurrentUser } from './auth.js';
+import { animateSavedProduct, bindProductTableFilter } from './jquery-features.js';
 import {
   escapeHTML,
   formatCurrency,
@@ -9,6 +10,26 @@ import {
   setHTML,
   showToast
 } from './utils.js';
+
+const LAST_PRODUCT_KEY = 'pcstock_ultimo_produto';
+
+class Produto {
+  constructor({ usuarioId, nome, modelo, tipo, especificacoesTecnicas, informacoesAdicionais, valorVenda }) {
+    this.usuarioId = usuarioId;
+    this.nome = nome;
+    this.modelo = modelo;
+    this.tipo = tipo;
+    this.especificacoes_tecnicas = especificacoesTecnicas;
+    this.informacoes_adicionais = informacoesAdicionais;
+    this.valor_venda = valorVenda;
+    this.quantidade_estoque = 0;
+    this.quantidade_cadastro = 0;
+    this.data_cadastro = getTodayLocalISO();
+    this.createdAt = new Date().toISOString();
+    this.ativo = true;
+  }
+}
+
 function getProdutoStatus(produto) {
   if (produto.quantidade_estoque <= 0) {
     return { label: 'Zerado', className: 'out-stock' };
@@ -26,6 +47,7 @@ export async function initPainelPage() {
     renderResumo(produtos);
     renderTabela(produtos);
     bindDeleteButtons(produtos);
+    bindProductTableFilter();
   } catch (error) {
     console.error(error);
     setHTML('produtos-table', '<div class="empty-state">Não foi possível carregar os produtos.</div>');
@@ -71,8 +93,9 @@ function renderTabela(produtos) {
     .map((produto) => {
       const status = getProdutoStatus(produto);
       const canDelete = produto.quantidade_estoque === 0;
+      const searchText = `${produto.nome} ${produto.modelo} ${produto.tipo}`.toLocaleLowerCase('pt-BR');
       return `
-        <tr>
+        <tr data-product-row data-search="${escapeHTML(searchText)}">
           <td>
             <div class="fw-semibold">${escapeHTML(produto.nome)}</div>
             <div class="text-secondary small">${escapeHTML(produto.modelo || 'Sem modelo')}</div>
@@ -123,6 +146,9 @@ function renderTabela(produtos) {
           <tbody>${rows}</tbody>
         </table>
       </div>
+      <div id="filtro-produtos-vazio" class="empty-state d-none mt-3">
+        Nenhum produto corresponde ao filtro.
+      </div>
     `
   );
 }
@@ -149,19 +175,74 @@ function bindDeleteButtons(produtos) {
     });
   });
 }
+
+function saveLastProduct(product, serverSaved) {
+  localStorage.setItem(
+    LAST_PRODUCT_KEY,
+    JSON.stringify({
+      product,
+      serverSaved,
+      savedAt: new Date().toISOString()
+    })
+  );
+}
+
+function loadLastProduct() {
+  const raw = localStorage.getItem(LAST_PRODUCT_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
+function renderSavedProduct(record = loadLastProduct()) {
+  const target = document.getElementById('produto-resultado-conteudo');
+  if (!target || !record?.product) return;
+  const product = record.product;
+  target.innerHTML = `
+    <div class="row g-3">
+      <div class="col-md-6"><strong>Nome:</strong> ${escapeHTML(String(product.nome || '—'))}</div>
+      <div class="col-md-6"><strong>Modelo:</strong> ${escapeHTML(String(product.modelo || '—'))}</div>
+      <div class="col-md-6"><strong>Tipo:</strong> ${escapeHTML(String(product.tipo || '—'))}</div>
+      <div class="col-md-6"><strong>Valor:</strong> ${formatCurrency(product.valor_venda)}</div>
+      <div class="col-12">
+        <strong>Persistência:</strong>
+        <span class="${record.serverSaved ? 'text-success' : 'text-warning'}">
+          ${record.serverSaved ? 'salvo no localStorage e no JSON Server' : 'salvo somente no localStorage'}
+        </span>
+      </div>
+    </div>
+  `;
+  animateSavedProduct();
+}
+
 export async function initNovoProdutoPage() {
   const user = getCurrentUser();
   if (!user) return;
-  const form = document.getElementById('produto-form');
+  const form = document.querySelector('#produto-form');
   if (!form) return;
   const pageTitle = document.querySelector('.app-topbar h2');
-  const sectionTitle = document.querySelector('.form-card h3');
-  const sectionNote = document.querySelector('.form-card .page-note');
+  const sectionTitle = document.querySelector('#produto-card h3');
+  const sectionNote = document.querySelector('#produto-card .page-note');
   const submitButton = form.querySelector('button[type="submit"]');
   const url = new URL(window.location.href);
   const editingId = Number(url.searchParams.get('id'));
   const isEditing = Number.isFinite(editingId) && editingId > 0;
   let produtoAtual = null;
+  renderSavedProduct();
+
+  document.getElementById('limpar-produto')?.addEventListener('click', () => {
+    form.querySelectorAll('input, textarea').forEach((field) => {
+      field.value = '';
+      field.setCustomValidity('');
+    });
+    form.classList.remove('was-validated');
+    qs('#nome').focus();
+    showToast('Campos do produto foram limpos.');
+  });
+
   if (isEditing) {
     try {
       const produto = await getProdutoById(editingId);
@@ -192,28 +273,32 @@ export async function initNovoProdutoPage() {
   }
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const payload = {
+    form.classList.add('was-validated');
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      showToast('Corrija os campos destacados antes de salvar.', 'error');
+      return;
+    }
+
+    const produto = new Produto({
       usuarioId: user.id,
       nome: qs('#nome').value.trim(),
       modelo: qs('#modelo').value.trim(),
       tipo: qs('#tipo').value.trim(),
-      especificacoes_tecnicas: qs('#especificacoes_tecnicas').value.trim(),
-      informacoes_adicionais: qs('#informacoes_adicionais').value.trim(),
-      valor_venda: Number(qs('#valor_venda').value || 0)
-    };
-    if (!payload.nome) {
-      showToast('Informe pelo menos o nome do produto.', 'error');
-      return;
-    }
+      especificacoesTecnicas: qs('#especificacoes_tecnicas').value.trim(),
+      informacoesAdicionais: qs('#informacoes_adicionais').value.trim(),
+      valorVenda: Number(qs('#valor_venda').value)
+    });
+
     try {
       if (produtoAtual) {
         await patchProduto(produtoAtual.id, {
-          nome: payload.nome,
-          modelo: payload.modelo,
-          tipo: payload.tipo,
-          especificacoes_tecnicas: payload.especificacoes_tecnicas,
-          informacoes_adicionais: payload.informacoes_adicionais,
-          valor_venda: payload.valor_venda
+          nome: produto.nome,
+          modelo: produto.modelo,
+          tipo: produto.tipo,
+          especificacoes_tecnicas: produto.especificacoes_tecnicas,
+          informacoes_adicionais: produto.informacoes_adicionais,
+          valor_venda: produto.valor_venda
         });
         showToast('Produto atualizado com sucesso.');
         window.setTimeout(() => {
@@ -221,18 +306,22 @@ export async function initNovoProdutoPage() {
         }, 450);
         return;
       }
-      await createProduto({
-        ...payload,
-        quantidade_estoque: 0,
-        quantidade_cadastro: 0,
-        data_cadastro: getTodayLocalISO(),
-        createdAt: new Date().toISOString(),
-        ativo: true
-      });
-      showToast('Produto cadastrado com sucesso.');
+
+      const savedProduct = await createProduto(produto);
+      saveLastProduct(savedProduct, true);
+      renderSavedProduct();
+      showToast('Produto salvo no localStorage e no JSON Server.');
       form.reset();
+      form.classList.remove('was-validated');
+      qs('#nome').focus();
     } catch (error) {
       console.error(error);
+      if (error.localProduct) {
+        saveLastProduct(error.localProduct, false);
+        renderSavedProduct();
+        showToast(error.message, 'error');
+        return;
+      }
       showToast(
         produtoAtual ? 'Não foi possível atualizar o produto.' : 'Não foi possível cadastrar o produto.',
         'error'

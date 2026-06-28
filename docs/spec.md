@@ -95,15 +95,18 @@ Breve explicação das tabelas principais:
   - motivo: Define a natureza da saída. Exemplos comuns incluem "VENDA", "DEFEITO", "AJUSTE", entre outros.
   - destinatario: Indica para onde o produto foi destinado (ex: plataformas de venda como Mercado Livre, Amazon ou loja física). Pode ser nulo dependendo do tipo de saída.
   - data: Data em que a saída foi registrada.
+
 ## 3. Rotas da API (JSON Server)
 
 A aplicação consome a API local simulada pelo JSON Server. Abaixo os principais endpoints:
 
 ### Usuários
+
 - `GET /usuarios` - Retorna a lista de usuários.
 - `POST /usuarios` - Cadastra um novo usuário.
 
 ### Produtos
+
 - `GET /produtos` - Retorna a lista de produtos.
 - `GET /produtos?usuarioId=1` - Retorna os produtos de um usuário específico.
 - `POST /produtos` - Cadastra um novo produto.
@@ -111,15 +114,17 @@ A aplicação consome a API local simulada pelo JSON Server. Abaixo os principai
 - `DELETE /produtos/:id` - Remove um produto, quando aplicável pela regra de negócio.
 
 ### Entradas
+
 - `GET /entradas` - Retorna a lista de entradas.
 - `GET /entradas?produtoId=1` - Retorna as entradas de um produto específico.
 - `POST /entradas` - Registra uma nova entrada de estoque.
 
 ### Saídas
+
 - `GET /saidas` - Retorna a lista de saídas.
 - `GET /saidas?produtoId=1` - Retorna as saídas de um produto específico.
 - `POST /saidas` - Registra uma nova saída de estoque.
-  
+
 ## 4. Estrutura do Banco de Dados (db.json)
 
 Esta é a representação em formato JSON do banco de dados simulado. Esta estrutura serve de contexto para ferramentas de IA e para o JSON Server inicializar a API Fake.
@@ -170,6 +175,7 @@ Esta é a representação em formato JSON do banco de dados simulado. Esta estru
       "lote": "Lote-2026-03-A",
       "remetente": "Fornecedor XYZ",
       "distribuidor": "Distribuidora ABC",
+      "cnpj_fornecedor": "00.000.000/0000-00",
       "data": "2026-03-24"
     }
   ],
@@ -194,7 +200,7 @@ Esta é a representação em formato JSON do banco de dados simulado. Esta estru
     }
   ]
 }
-````
+```
 
 ## 5. Framework CSS
 

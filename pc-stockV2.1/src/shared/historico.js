@@ -37,6 +37,7 @@ export async function initHistoricoPage() {
         quantidade: quantidadeCadastro,
         valorUnitario: produto.valor_venda,
         valorBruto: quantidadeCadastro * produto.valor_venda,
+        cnpjFornecedor: '',
         detalhes:
           produto.ativo === false
             ? 'Cadastro inicial do produto | Produto inativo'
@@ -58,7 +59,14 @@ export async function initHistoricoPage() {
           quantidade: entrada.quantidade,
           valorUnitario: entrada.valor_unitario,
           valorBruto: entrada.quantidade * entrada.valor_unitario,
-          detalhes: `${entrada.distribuidor || 'Sem distribuidor'} | ${entrada.lote || 'Sem lote'}`
+          cnpjFornecedor: entrada.cnpj_fornecedor,
+          detalhes: [
+            entrada.distribuidor || 'Sem distribuidor',
+            entrada.lote || 'Sem lote',
+            entrada.cidade_fornecedor ? `${entrada.cidade_fornecedor}/${entrada.uf_fornecedor || '—'}` : ''
+          ]
+            .filter(Boolean)
+            .join(' | ')
         };
       });
 
@@ -76,6 +84,7 @@ export async function initHistoricoPage() {
           quantidade: saida.quantidade,
           valorUnitario: saida.valor_unitario,
           valorBruto: saida.valor_unitario ? saida.quantidade * saida.valor_unitario : null,
+          cnpjFornecedor: '',
           detalhes: `${saida.motivo}${saida.destinatario ? ' | ' + saida.destinatario : ''}`
         };
       });
@@ -102,6 +111,7 @@ export async function initHistoricoPage() {
             <td>${item.quantidade}</td>
             <td>${item.valorUnitario === null ? '—' : formatCurrency(item.valorUnitario)}</td>
             <td>${item.valorBruto === null ? '—' : formatCurrency(item.valorBruto)}</td>
+            <td class="text-nowrap">${escapeHTML(item.cnpjFornecedor || '—')}</td>
             <td>${escapeHTML(item.detalhes)}</td>
           </tr>
         `;
@@ -122,6 +132,7 @@ export async function initHistoricoPage() {
                 <th>Quantidade</th>
                 <th>Valor unitário</th>
                 <th>Valor bruto</th>
+                <th>CNPJ do fornecedor</th>
                 <th>Detalhes</th>
               </tr>
             </thead>

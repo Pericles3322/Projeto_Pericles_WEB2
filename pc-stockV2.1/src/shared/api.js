@@ -110,6 +110,13 @@ function normalizeEntrada(item) {
     lote: String(item.lote ?? ''),
     remetente: String(item.remetente ?? ''),
     distribuidor: String(item.distribuidor ?? ''),
+    cnpj_fornecedor: String(item.cnpj_fornecedor ?? ''),
+    cep_fornecedor: String(item.cep_fornecedor ?? ''),
+    logradouro_fornecedor: String(item.logradouro_fornecedor ?? ''),
+    numero_fornecedor: String(item.numero_fornecedor ?? ''),
+    bairro_fornecedor: String(item.bairro_fornecedor ?? ''),
+    cidade_fornecedor: String(item.cidade_fornecedor ?? ''),
+    uf_fornecedor: String(item.uf_fornecedor ?? ''),
     data: String(item.data ?? ''),
     createdAt: String(item.createdAt ?? item.data ?? '')
   };
@@ -230,6 +237,9 @@ export async function getProdutoById(id) {
 export async function createProduto(payload) {
   const db = loadLocalDB();
   const produtoCompleto = normalizeProduto({ id: nextId(db.produtos), ...payload });
+  db.produtos.push(produtoCompleto);
+  saveLocalDB(db);
+
   try {
     const produto = normalizeProduto(
       await apiRequest('/produtos', {
@@ -238,13 +248,18 @@ export async function createProduto(payload) {
       })
     );
     const newDb = loadLocalDB();
-    newDb.produtos.push(produto);
+    const index = newDb.produtos.findIndex((item) => item.id === produtoCompleto.id);
+    if (index >= 0) newDb.produtos[index] = produto;
+    else newDb.produtos.push(produto);
     saveLocalDB(newDb);
     return produto;
-  } catch {
-    db.produtos.push(produtoCompleto);
-    saveLocalDB(db);
-    return produtoCompleto;
+  } catch (error) {
+    const syncError = new Error(
+      'Produto salvo no localStorage, mas o JSON Server não respondeu. Inicie o servidor e tente novamente.'
+    );
+    syncError.cause = error;
+    syncError.localProduct = produtoCompleto;
+    throw syncError;
   }
 }
 export async function patchProduto(id, payload) {

@@ -3,7 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../../assets/styles/bootstrap.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
     <link rel="stylesheet" href="../../assets/styles/style.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -53,7 +58,7 @@
         </header>
 
         <main class="container-fluid py-4">
-          <section class="form-card p-4 p-md-5">
+          <section id="produto-card" class="form-card p-4 p-md-5">
             <div class="mb-4">
               <div class="section-eyebrow">Cadastro</div>
               <h3 class="h3 mb-2">Novo produto</h3>
@@ -71,8 +76,12 @@
                   class="form-control form-control-kinetic"
                   type="text"
                   placeholder="Placa de Vídeo"
+                  minlength="3"
+                  maxlength="60"
                   required
+                  autofocus
                 />
+                <div class="invalid-feedback">Informe um nome com pelo menos 3 caracteres.</div>
               </div>
               <div class="col-md-6">
                 <label class="form-label-kinetic" for="modelo">Modelo</label>
@@ -81,7 +90,11 @@
                   class="form-control form-control-kinetic"
                   type="text"
                   placeholder="RX 5600 XT"
+                  minlength="2"
+                  maxlength="50"
+                  required
                 />
+                <div class="invalid-feedback">Informe o modelo do produto.</div>
               </div>
               <div class="col-md-6">
                 <label class="form-label-kinetic" for="tipo">Tipo</label>
@@ -90,7 +103,12 @@
                   class="form-control form-control-kinetic"
                   type="text"
                   placeholder="Hardware"
+                  minlength="3"
+                  maxlength="30"
+                  pattern="[A-Za-zÀ-ÿ ]+"
+                  required
                 />
+                <div class="invalid-feedback">Use somente letras e espaços.</div>
               </div>
               <div class="col-md-6">
                 <label class="form-label-kinetic" for="valor_venda">Valor de venda</label>
@@ -98,10 +116,12 @@
                   id="valor_venda"
                   class="form-control form-control-kinetic"
                   type="number"
-                  min="0"
+                  min="0.01"
                   step="0.01"
                   placeholder="0.00"
+                  required
                 />
+                <div class="invalid-feedback">Informe um valor maior que zero.</div>
               </div>
               <div class="col-12">
                 <label class="form-label-kinetic" for="especificacoes_tecnicas"
@@ -125,9 +145,16 @@
               </div>
               <div class="col-12 d-flex flex-column flex-md-row justify-content-md-end gap-3">
                 <a class="btn btn-surface" href="../dashboard/">Cancelar</a>
+                <button id="limpar-produto" class="btn btn-surface" type="button">Limpar</button>
                 <button class="btn btn-kinetic" type="submit">Salvar produto</button>
               </div>
             </form>
+          </section>
+
+          <section id="produto-resultado" class="saved-product-card p-4 mt-4 d-none" aria-live="polite">
+            <div class="section-eyebrow">Último cadastro salvo</div>
+            <h3 class="h4 mb-3">Dados do produto</h3>
+            <div id="produto-resultado-conteudo"></div>
           </section>
         </main>
       </div>
@@ -145,6 +172,12 @@
         ><span class="material-symbols-outlined d-block">history</span>Histórico</a
       >
     </nav>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
 
     <script type="module" src="./new-product.js"></script>
   </body>

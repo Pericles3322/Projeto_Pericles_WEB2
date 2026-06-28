@@ -1,7 +1,4 @@
 node_modules
 dist
-.vite
 assets/styles/style.css
 package-lock.json
-assets/styles/*.map
-assets/styles/bootstrap.css

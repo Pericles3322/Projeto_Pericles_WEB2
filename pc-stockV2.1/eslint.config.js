@@ -20,5 +20,18 @@ export default [
       'no-console': 'off',
       'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }]
     }
+  },
+  {
+    files: ['**/*.cjs'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'commonjs',
+      globals: {
+        ...globals.node
+      }
+    },
+    rules: {
+      'no-console': 'off'
+    }
   }
 ];

@@ -1,6 +1,7 @@
 import { getUsuarios } from './api.js';
 import { qs, showToast } from './utils.js';
 const STORAGE_KEY = 'pcstock_user';
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 export function getCurrentUser() {
   const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) return null;
@@ -44,6 +45,10 @@ export function initLoginPage() {
       showToast('Preencha e-mail e senha para continuar.', 'error');
       return;
     }
+    if (!EMAIL_REGEX.test(email)) {
+      showToast('Informe um e-mail válido, como nome@dominio.com.', 'error');
+      return;
+    }
     try {
       const usuarios = await getUsuarios();
       const usuario = usuarios.find(
@@ -60,7 +65,7 @@ export function initLoginPage() {
       }, 450);
     } catch (error) {
       console.error(error);
-      showToast('Não foi possível conectar à API Fake.', 'error');
+      showToast('Não foi possível conectar ao serviço de dados.', 'error');
     }
   });
 }

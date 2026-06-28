@@ -8,16 +8,13 @@
     "build": "npm run build:css && vite build",
     "preview": "vite preview",
     "api": "json-server --watch db.json --port 3000",
-    "json:server:routes": "json-server --watch db.json --routes routes.json --port 3000",
-    "sass": "sass --watch --load-path=node_modules assets/scss/bootstrap.scss:assets/styles/bootstrap.css assets/scss/main.scss:assets/styles/style.css --style=expanded --no-source-map --quiet-deps",
-    "build:css": "sass --load-path=node_modules assets/scss/bootstrap.scss assets/styles/bootstrap.css --style=expanded --no-source-map --quiet-deps && sass assets/scss/main.scss assets/styles/style.css --style=expanded --no-source-map",
+    "sass": "sass --watch assets/scss/main.scss:assets/styles/style.css --style=expanded --no-source-map",
+    "build:css": "sass assets/scss/main.scss assets/styles/style.css --style=expanded --no-source-map",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
-  },
-  "dependencies": {
-    "bootstrap": "^5.3.8"
+    "lint:fix": "eslint . --fix",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",
